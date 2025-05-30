@@ -1,0 +1,96 @@
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+
+const sectionVariants = {
+    hidden: {
+        opacity: 0,
+        y: 50
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.8,
+            ease: "easeOut"
+        }
+    }
+};
+
+function LeftBlogSection({ tags, title, img, href, color, imgSize = "w-80 h-80" }: { tags: string, title: string, img: string, href: string, color?: string, imgSize?: string }) {
+    return (
+        <motion.section
+            className="w-full py-16 flex flex-col md:flex-row gap-12 border-t border-blue-800"
+            style={{ borderColor: color }}
+            variants={sectionVariants}
+        >
+            <div className={`${imgSize} relative rounded overflow-hidden shrink-0 group`}>
+                <Image
+                    src={img}
+                    alt="Featured image"
+                    fill
+                    className="object-cover transition-all duration-700 group-hover:scale-105"
+                    priority
+                />
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-all duration-700 mix-blend-lighten"></div>
+            </div>
+            <div className="space-y-4">
+                <div className="text-sm md:text-base text-blue-800 font-mono underline" style={{ color: color }}>
+                    {tags}
+                </div>
+
+                <h2 className="font-serif text-blue-800 text-3xl md:text-4xl lg:text-5xl font-light leading-[1.2] tracking-[-0.02em]" style={{ color: color }}>
+                    {title}
+                </h2>
+
+                <div className="pt-4">
+                    <Link href={href} className="inline-block px-4 py-1.5 cursor-pointer border border-gray-900 dark:border-gray-100 text-gray-700 dark:text-gray-100 text-sm md:text-base font-medium hover:bg-gray-900/5 dark:hover:bg-gray-100/5 transition-all duration-300">
+                        Read More
+                    </Link>
+                </div>
+            </div>
+        </motion.section>
+    );
+}
+
+function RightBlogSection({ tags, title, img, href, color, imgSize = "w-80 h-80" }: { tags: string, title: string, img: string, href: string, color?: string, imgSize?: string }) {
+    return (
+        <motion.section
+            className="w-full py-16 flex flex-col md:flex-row-reverse gap-12 border-t border-blue-800"
+            style={{ borderColor: color }}
+            variants={sectionVariants}
+        >
+            <div className={`w-80 h-80 ${imgSize} relative rounded overflow-hidden shrink-0 group`}>
+                <Image
+                    src={img}
+                    alt="Featured image"
+                    fill
+                    className="object-cover transition-all duration-700 group-hover:scale-105"
+                    priority
+                />
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-all duration-700 mix-blend-lighten"></div>
+            </div>
+            <div className="space-y-4 mr-auto">
+                <div className="text-sm md:text-base text-blue-800 font-mono underline" style={{ color: color }}>
+                    {tags}
+                </div>
+
+                <h2 className="font-serif text-blue-800 text-3xl md:text-4xl lg:text-5xl font-light leading-[1.2] tracking-[-0.02em]" style={{ color: color }}>
+                    {title}
+                </h2>
+
+                <div className="pt-4">
+                    <Link href={href} className="inline-block px-4 py-1.5 cursor-pointer border border-gray-900 dark:border-gray-100 text-gray-700 dark:text-gray-100 text-sm md:text-base font-medium hover:bg-gray-900/5 dark:hover:bg-gray-100/5 transition-all duration-300">
+                        Read More
+                    </Link>
+                </div>
+            </div>
+        </motion.section>
+    );
+}
+
+
+export default {
+    Left: LeftBlogSection,
+    Right: RightBlogSection,
+}
