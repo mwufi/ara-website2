@@ -1,5 +1,5 @@
 ---
-title: Frames Research Preview
+title: Email Client of You
 date: 2025-05-25
 previewVariant: left
 previewImage: /img1.png

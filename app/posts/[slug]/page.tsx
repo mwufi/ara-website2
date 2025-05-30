@@ -1,6 +1,6 @@
 
-import { format, parseISO } from 'date-fns'
 import { allPosts } from 'contentlayer/generated'
+import PostHeader from './PostHeader'
 
 export const generateStaticParams = async () => allPosts.map((post) => ({ slug: post._raw.flattenedPath }))
 
@@ -16,17 +16,9 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
 
     return (
         <main className="px-6 max-w-7xl mx-auto">
-            {/* Hero Section */}
-            <section className="mb-20">
-                <h2 className="font-serif text-3xl md:text-[48px] font-light leading-[1.2] tracking-[-0.02em] max-w-[65rem]">
-                    {post.title}
-                </h2>
-                <time dateTime={post.date} className="mb-1 text-xs text-gray-600">
-                    {format(parseISO(post.date), 'LLLL d, yyyy')}
-                </time>
-            </section>
+            <PostHeader post={post} />
 
-            <div className="[&>*]:mb-3 [&>*:last-child]:mb-0" dangerouslySetInnerHTML={{ __html: post.body.html }} />
+            <div className="[&>*]:mb-3 [&>*:last-child]:mb-0 max-w-[65rem] mx-auto" dangerouslySetInnerHTML={{ __html: post.body.html }} />
         </main>
     )
 }
