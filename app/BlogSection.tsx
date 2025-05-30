@@ -83,4 +83,5 @@ function BlogSection({
 export default {
     Left: (props: Omit<Parameters<typeof BlogSection>[0], 'alignment'>) => <BlogSection {...props} alignment="left" />,
     Right: (props: Omit<Parameters<typeof BlogSection>[0], 'alignment'>) => <BlogSection {...props} alignment="right" />,
+    All: BlogSection
 };
