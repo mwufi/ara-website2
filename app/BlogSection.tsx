@@ -18,12 +18,19 @@ const sectionVariants = {
     }
 };
 
+const themeColors = {
+    magenta: "#AB0782",
+    purple: "#5F00AD",
+    blue: "#0034AD",
+    yellow: "#978C11"
+}
+
 function BlogSection({
     tags,
     title,
     img,
     href,
-    color,
+    themeColor,
     imgSize = "w-80 h-80",
     alignment = "left"
 }: {
@@ -31,7 +38,7 @@ function BlogSection({
     title: string;
     img: string;
     href: string;
-    color?: string;
+    themeColor?: string;
     imgSize?: string;
     alignment?: "left" | "right";
 }) {
@@ -46,7 +53,7 @@ function BlogSection({
         <motion.section
             ref={ref}
             className={`w-full py-16 flex flex-col ${flexDirection} gap-12 border-t border-blue-800`}
-            style={{ borderColor: color }}
+            style={{ borderColor: themeColors[themeColor as keyof typeof themeColors] }}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             variants={sectionVariants}
@@ -62,11 +69,11 @@ function BlogSection({
                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-all duration-700 mix-blend-lighten select-none pointer-events-none"></div>
             </div>
             <div className={`space-y-4 ${contentAlignment}`}>
-                <div className="text-sm md:text-base text-blue-800 font-mono underline" style={{ color: color }}>
+                <div className="text-sm md:text-base text-blue-800 font-mono underline" style={{ color: themeColors[themeColor as keyof typeof themeColors] }}>
                     {tags}
                 </div>
 
-                <h2 className="font-serif text-blue-800 text-3xl md:text-4xl lg:text-5xl font-light leading-[1.2] tracking-[-0.02em]" style={{ color: color }}>
+                <h2 className="font-serif text-blue-800 text-3xl md:text-4xl lg:text-5xl font-light leading-[1.2] tracking-[-0.02em]" style={{ color: themeColors[themeColor as keyof typeof themeColors] }}>
                     {title}
                 </h2>
 
