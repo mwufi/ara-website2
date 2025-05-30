@@ -24,15 +24,15 @@ function LeftBlogSection({ tags, title, img, href, color, imgSize = "w-80 h-80" 
             style={{ borderColor: color }}
             variants={sectionVariants}
         >
-            <div className={`${imgSize} relative rounded overflow-hidden shrink-0 group`}>
+            <div className={`${imgSize} relative rounded overflow-hidden shrink-0 group select-none`}>
                 <Image
                     src={img}
                     alt="Featured image"
                     fill
-                    className="object-cover transition-all duration-700 group-hover:scale-105"
+                    className="object-cover transition-all duration-700 group-hover:scale-105 select-none pointer-events-none"
                     priority
                 />
-                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-all duration-700 mix-blend-lighten"></div>
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-all duration-700 mix-blend-lighten select-none pointer-events-none"></div>
             </div>
             <div className="space-y-4">
                 <div className="text-sm md:text-base text-blue-800 font-mono underline" style={{ color: color }}>
@@ -60,15 +60,15 @@ function RightBlogSection({ tags, title, img, href, color, imgSize = "w-80 h-80"
             style={{ borderColor: color }}
             variants={sectionVariants}
         >
-            <div className={`w-80 h-80 ${imgSize} relative rounded overflow-hidden shrink-0 group`}>
+            <div className={`w-80 h-80 ${imgSize} relative rounded overflow-hidden shrink-0 group select-none`}>
                 <Image
                     src={img}
                     alt="Featured image"
                     fill
-                    className="object-cover transition-all duration-700 group-hover:scale-105"
+                    className="object-cover transition-all duration-700 group-hover:scale-105 select-none pointer-events-none"
                     priority
                 />
-                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-all duration-700 mix-blend-lighten"></div>
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-all duration-700 mix-blend-lighten select-none pointer-events-none"></div>
             </div>
             <div className="space-y-4 mr-auto">
                 <div className="text-sm md:text-base text-blue-800 font-mono underline" style={{ color: color }}>
