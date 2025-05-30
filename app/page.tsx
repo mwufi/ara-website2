@@ -57,22 +57,14 @@ export default function Home() {
         </section>
 
         {/* Full-width Content Blocks */}
-        <motion.div
-          className="space-y-8 mb-20"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: 0.3
-              }
-            }
-          }}
-        >
+        <div className="space-y-8 mb-20">
           <BlogSection.Left tags="Design" title="Personal Memory" img="/img1.png" href="#" />
           <BlogSection.Right tags="Artwork" title="Email Client of You" img="/img2.png" href="#" color={themeColors.magenta} imgSize="lg:w-[500px] lg:h-[500px]" />
-        </motion.div>
+          <BlogSection.Right tags="Artwork" title="Email Client of You" img="/img2.png" href="#" color={themeColors.magenta} imgSize="lg:w-[500px] lg:h-[500px]" />
+          <BlogSection.Right tags="Artwork" title="Email Client of You" img="/img2.png" href="#" color={themeColors.magenta} imgSize="lg:w-[500px] lg:h-[500px]" />
+          <BlogSection.Right tags="Artwork" title="Email Client of You" img="/img2.png" href="#" color={themeColors.magenta} imgSize="lg:w-[500px] lg:h-[500px]" />
+          <BlogSection.Right tags="Artwork" title="Email Client of You" img="/img2.png" href="#" color={themeColors.magenta} imgSize="lg:w-[500px] lg:h-[500px]" />
+        </div>
 
         {/* Footer */}
         <footer className="border-t border-gray-200 dark:border-gray-700 pt-12 pb-8">

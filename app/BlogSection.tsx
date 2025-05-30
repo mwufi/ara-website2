@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const sectionVariants = {
     hidden: {
@@ -11,17 +12,23 @@ const sectionVariants = {
         opacity: 1,
         y: 0,
         transition: {
-            duration: 0.8,
-            ease: "easeOut"
+            duration: 0.7,
+            ease: "easeInOut"
         }
     }
 };
 
 function LeftBlogSection({ tags, title, img, href, color, imgSize = "w-80 h-80" }: { tags: string, title: string, img: string, href: string, color?: string, imgSize?: string }) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-50px" });
+
     return (
         <motion.section
+            ref={ref}
             className="w-full py-16 flex flex-col md:flex-row gap-12 border-t border-blue-800"
             style={{ borderColor: color }}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
             variants={sectionVariants}
         >
             <div className={`${imgSize} relative rounded overflow-hidden shrink-0 group select-none`}>
@@ -54,10 +61,16 @@ function LeftBlogSection({ tags, title, img, href, color, imgSize = "w-80 h-80" 
 }
 
 function RightBlogSection({ tags, title, img, href, color, imgSize = "w-80 h-80" }: { tags: string, title: string, img: string, href: string, color?: string, imgSize?: string }) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-50px" });
+
     return (
         <motion.section
+            ref={ref}
             className="w-full py-16 flex flex-col md:flex-row-reverse gap-12 border-t border-blue-800"
             style={{ borderColor: color }}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
             variants={sectionVariants}
         >
             <div className={`w-80 h-80 ${imgSize} relative rounded overflow-hidden shrink-0 group select-none`}>
