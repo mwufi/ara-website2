@@ -135,7 +135,7 @@ export default function PrivacyPage() {
 
                 <p className="text-lg font-sans leading-[1.7] tracking-[0.01em] mb-4">Questions about privacy? Contact us at:</p>
                 <ul className="list-disc list-inside mb-6 space-y-2">
-                    <li className="text-lg leading-relaxed">Email: privacy@ara-intelligence.com</li>
+                    <li className="text-lg leading-relaxed">Email: privacy@ara.computer</li>
                     <li className="text-lg leading-relaxed">Address: [Your business address]</li>
                 </ul>
 

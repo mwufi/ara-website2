@@ -87,7 +87,7 @@ export default function TermsPage() {
                 <h2 className="text-4xl font-serif font-light leading-[1.3] tracking-[-0.01em] mb-6 mt-10">Contact</h2>
 
                 <p className="text-lg font-sans leading-[1.7] tracking-[0.01em] mb-4">
-                    Questions about these terms? Contact us at legal@ara-intelligence.com
+                    Questions about these terms? Contact us at legal@ara.computer
                 </p>
 
                 <hr className="border-t border-gray-300 my-8" />
