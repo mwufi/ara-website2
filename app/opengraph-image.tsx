@@ -1,12 +1,15 @@
 import { ImageResponse } from 'next/og'
 
-export const runtime = 'edge'
+// Image metadata
+export const size = {
+    width: 1200,
+    height: 630,
+}
 
-export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url)
-    const title = searchParams.get('title') || 'Ara Intelligence'
-    const description = searchParams.get('description') || 'Building the future of AI'
+export const contentType = 'image/png'
 
+// Image generation
+export default async function Image() {
     return new ImageResponse(
         (
             <div
@@ -27,7 +30,7 @@ export async function GET(request: Request) {
                     style={{
                         background: 'rgba(255, 255, 255, 0.1)',
                         borderRadius: '24px',
-                        padding: '60px',
+                        padding: '80px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -36,18 +39,18 @@ export async function GET(request: Request) {
                         border: '1px solid rgba(255, 255, 255, 0.2)',
                     }}
                 >
-                    {/* Ara logo/icon placeholder */}
+                    {/* Ara logo/icon */}
                     <div
                         style={{
-                            width: '120px',
-                            height: '120px',
+                            width: '140px',
+                            height: '140px',
                             background: 'rgba(255, 255, 255, 0.2)',
-                            borderRadius: '60px',
+                            borderRadius: '70px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '60px',
-                            marginBottom: '40px',
+                            fontSize: '70px',
+                            marginBottom: '48px',
                         }}
                     >
                         🤖
@@ -55,34 +58,33 @@ export async function GET(request: Request) {
 
                     <h1
                         style={{
-                            fontSize: '72px',
+                            fontSize: '80px',
                             fontWeight: 'bold',
-                            margin: '0 0 20px 0',
+                            margin: '0 0 24px 0',
                             background: 'linear-gradient(45deg, #fff, #f0f0f0)',
                             backgroundClip: 'text',
                             color: 'transparent',
                         }}
                     >
-                        {title}
+                        Ara Intelligence
                     </h1>
 
                     <p
                         style={{
-                            fontSize: '32px',
+                            fontSize: '36px',
                             margin: '0',
                             opacity: 0.9,
-                            maxWidth: '800px',
+                            maxWidth: '900px',
                             lineHeight: 1.4,
                         }}
                     >
-                        {description}
+                        Building the future of AI - personal, cute, and intelligent assistants for everyone.
                     </p>
                 </div>
             </div>
         ),
         {
-            width: 1200,
-            height: 630,
-        },
+            ...size,
+        }
     )
 } 

@@ -35,14 +35,7 @@ export const metadata: Metadata = {
     url: "https://ara.computer",
     siteName: "Ara Intelligence",
     type: "website",
-    images: [
-      {
-        url: "/api/og", // Dynamic OG image
-        width: 1200,
-        height: 630,
-        alt: "Ara Intelligence - AI Assistants",
-      }
-    ],
+    // images will be automatically handled by opengraph-image.tsx
     videos: [
       {
         url: "/ara-demo.mp4", // We'll add this
@@ -58,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ara Intelligence",
     description: "Building the future of AI - personal, cute, and intelligent assistants for everyone.",
-    images: ["/api/og"],
+    // images will be automatically handled by opengraph-image.tsx
     creator: "@ara_intelligence", // Update with your actual Twitter handle
   },
 

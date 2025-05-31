@@ -1,30 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-    title: "Products - Ara Intelligence",
-    description: "Building the future of personal AI - products that understand, assist, and connect with you on a deeply personal level.",
-    openGraph: {
-        title: "Products - Ara Intelligence",
-        description: "Discover MailPuppy, Ara Studio, Ara Connect, and OS1 - the next generation of personal AI assistants.",
-        url: "https://ara.computer/products",
-        images: [
-            {
-                url: "/api/og?title=Our Products&description=The next generation of personal AI assistants",
-                width: 1200,
-                height: 630,
-                alt: "Ara Intelligence Products",
-            }
-        ],
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Products - Ara Intelligence",
-        description: "Discover MailPuppy, Ara Studio, Ara Connect, and OS1 - the next generation of personal AI assistants.",
-        images: ["/api/og?title=Our Products&description=The next generation of personal AI assistants"],
-    },
-};
 
 const products = [
     {
