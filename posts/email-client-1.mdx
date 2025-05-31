@@ -5,6 +5,30 @@ previewVariant: left
 previewImage: /img1.png
 ---
 
-<button className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-  Click me
-</button>
+# An agent for reading my email
+
+As I mentioned above, however, a better System Prompt still won't save me much time on writing emails from scratch.
+
+The reason, of course, is that I prefer my emails to be as short as possible, which means any email written in my voice will be roughly the same length as the User Prompt that describes it. I've had a similar experience every time I've tried to use an LLM to write something. Surprisingly, generative AI models are not actually that useful for generating text.
+
+The thing that LLMs are great at is reading text and transforming it, and that's what I'd like to use an agent for. Let's revisit our email-reading agent demo:
+
+> This is a blockquote - Steve Jobs
+
+## ...and unto the developer what is the developer's
+
+If developers aren't writing prompts, what will they do?
+
+For one, they'll create UIs for building agents that operate in a particular domain, like an email inbox or a general ledger.
+
+Most people probably won't want to write every prompt from scratch, and good agent builders won't force them to. Developers will provide templates and prompt-writing agents that help users bootstrap their own agents.
+
+Users also need an interface for reviewing an agent's work and iterating on their prompts, similar to the little dummy email agent builder I included above. This interface gives them a fast feedback loop for teaching an agent to perform a task reliably.
+
+Developers will also build agent tools.
+
+Tools are the mechanism by which agents act on the outside world. My email-writing agent needs a tool to submit a draft for my review. It might use another tool to send an email without my review (if I'm feeling confident enough to allow that) or to search my inbox for previous emails from a particular email address or to check YC's founder directory to see if an email came from a YC founder.
+
+Tools provide the security layer for agents. Whether or not an agent can do a particular thing is determined by which tools it has access to. It is much easier to enforce boundaries with tools written in code than it is to enforce them between System and User Prompts written in text.
+
+I suspect that in the future we'll look back and laugh at the idea that a "prompt injection" (like "Ignore previous instructions...") was something to be concerned about. The whole idea that developers should secure one part of the prompt from another part of the prompt is silly, and a strong signal that the abstractions we're using are broken. As this post makes clear: if any part of the prompt is in user space then the whole thing is in user space.
