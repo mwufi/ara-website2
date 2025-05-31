@@ -13,7 +13,7 @@ export default function PostHeader({ post }: { post: Post }) {
                     />
                 </div>
             )}
-            <div className="max-w-[65rem] mx-auto">
+            <div className="max-w-5xl mx-auto">
                 <h2 className="font-serif text-3xl md:text-[48px] font-light leading-[1.2] tracking-[-0.02em] mb-4">
                     {post.title}
                 </h2>

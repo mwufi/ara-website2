@@ -21,7 +21,7 @@ const PostLayout = async ({ params }: { params: Promise<{ slug: string }> }) => 
         <main className="px-6 mx-auto">
             <PostHeader post={post} />
 
-            <div className="[&>*]:mb-3 [&>*:last-child]:mb-0 max-w-[65rem] mx-auto">
+            <div className="[&>*]:mb-3 [&>*:last-child]:mb-0 max-w-5xl mx-auto border-t border-gray-200 pt-12">
                 <div className="max-w-[45rem] mr-auto">
                     <MDXContent code={post.mdx} components={components} />
                 </div>
