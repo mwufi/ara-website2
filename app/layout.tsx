@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Source_Serif_4, Source_Code_Pro } from "next/font/go
 import "./globals.css";
 import NavHeader from "./NavHeader";
 import SmoothScrollProvider from "./components/SmoothScrollProvider";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -81,6 +82,7 @@ export default function RootLayout({
               {children}
             </main>
           </div>
+          <Footer />
         </SmoothScrollProvider>
       </body>
     </html>

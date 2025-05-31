@@ -29,15 +29,6 @@ export default function Home() {
           <BlogSection.All key={post._meta.filePath} tags={post.previewTags!} title={post.title} img={post.previewImage} href={`/posts/${post._meta.path}`} alignment={post.previewVariant as "left" | "right"} themeColor={post.previewColor} />
         ))}
       </div>
-
-      {/* Footer */}
-      <footer className="border-t border-gray-200 dark:border-gray-700 pt-12 pb-8">
-        <div className="text-center">
-          <p className="text-gray-500 dark:text-gray-400 text-sm">
-            © 2024 Ara Intelligence. Building the future of personal AI.
-          </p>
-        </div>
-      </footer>
     </main>
   );
 }

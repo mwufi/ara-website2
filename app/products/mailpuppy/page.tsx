@@ -270,15 +270,6 @@ export default function MailPuppyPage() {
                     </button>
                 </div>
             </section>
-
-            {/* Footer */}
-            <footer className="border-t border-gray-200 dark:border-gray-700 pt-12 pb-8">
-                <div className="text-center">
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">
-                        © 2024 Ara Intelligence. Building the future of personal AI.
-                    </p>
-                </div>
-            </footer>
         </main>
     );
 } 
