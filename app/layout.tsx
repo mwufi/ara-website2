@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Source_Serif_4, Source_Code_Pro } from "next/font/google";
 import "./globals.css";
 import NavHeader from "./NavHeader";
+import SmoothScrollProvider from "./components/SmoothScrollProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -73,12 +74,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} ${sourceCodePro.variable} antialiased min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800`}
       >
-        <div className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <NavHeader />
-          <main className="pt-28">
-            {children}
-          </main>
-        </div>
+        <SmoothScrollProvider>
+          <div className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <NavHeader />
+            <main className="pt-28">
+              {children}
+            </main>
+          </div>
+        </SmoothScrollProvider>
       </body>
     </html>
   );
