@@ -26,6 +26,48 @@ const sourceCodePro = Source_Code_Pro({
 export const metadata: Metadata = {
   title: "Ara Intelligence",
   description: "Building the future of AI - personal, cute, and intelligent assistants for everyone.",
+  metadataBase: new URL('https://ara.computer'),
+
+  // Open Graph
+  openGraph: {
+    title: "Ara Intelligence",
+    description: "Building the future of AI - personal, cute, and intelligent assistants for everyone.",
+    url: "https://ara.computer",
+    siteName: "Ara Intelligence",
+    type: "website",
+    images: [
+      {
+        url: "/api/og", // Dynamic OG image
+        width: 1200,
+        height: 630,
+        alt: "Ara Intelligence - AI Assistants",
+      }
+    ],
+    videos: [
+      {
+        url: "/ara-demo.mp4", // We'll add this
+        width: 1200,
+        height: 630,
+        type: "video/mp4",
+      }
+    ],
+  },
+
+  // Twitter
+  twitter: {
+    card: "summary_large_image",
+    title: "Ara Intelligence",
+    description: "Building the future of AI - personal, cute, and intelligent assistants for everyone.",
+    images: ["/api/og"],
+    creator: "@ara_intelligence", // Update with your actual Twitter handle
+  },
+
+  // Additional meta tags
+  other: {
+    "og:video:type": "video/mp4",
+    "og:video:width": "1200",
+    "og:video:height": "630",
+  },
 };
 
 export default function RootLayout({
