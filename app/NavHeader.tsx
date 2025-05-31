@@ -10,11 +10,11 @@ export default function NavHeader() {
     // Transform scroll position to padding values
     const headerPadding = useTransform(scrollY, [0, 100], [40, 8]); // py-10 = 40px, py-2 = 8px
     const logoScale = useTransform(scrollY, [0, 100], [1, 0.85]);
-    const backgroundOpacity = useTransform(scrollY, [0, 100], [0.5, 0.8]);
+    const backgroundOpacity = useTransform(scrollY, [0, 100], [0.2, 0.3]);
 
     return (
         <motion.header
-            className="fixed top-0 left-0 right-0 z-50 bg-transparent"
+            className="fixed top-0 left-0 right-0 z-50"
             style={{
                 paddingTop: headerPadding,
                 paddingBottom: headerPadding,
@@ -26,14 +26,14 @@ export default function NavHeader() {
                         scale: logoScale,
                     }}
                 >
-                    <Link href="/" className="flex items-center space-x-3 backdrop-blur-sm rounded-full px-8 bg-white/50 transition-transform duration-300 hover:scale-105">
+                    <Link href="/" className="flex items-center space-x-3 backdrop-blur-sm rounded-full px-8 bg-white/50 dark:bg-white/20 transition-transform duration-300 hover:scale-105">
                         <div className="w-20 h-16 rounded-lg flex items-center justify-center">
                             <Image
                                 src="/ara_logo.svg"
                                 alt="Ara Intelligence Logo"
                                 width={140}
                                 height={40}
-                                className="w-full h-full"
+                                className="w-full h-full dark:invert"
                             />
                         </div>
                         <div>
