@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import BlogSection from "./BlogSection";
+import BlogSection from "../BlogSection";
 import { allPosts } from 'content-collections'
 import { compareDesc } from "date-fns";
 

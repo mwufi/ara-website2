@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Source_Serif_4, Source_Code_Pro } from "next/font/google";
-import "./globals.css";
-import NavHeader from "./NavHeader";
+import "../globals.css";
+import NavHeader from "../NavHeader";
 import SmoothScrollProvider from "./components/SmoothScrollProvider";
 import Footer from "@/components/Footer";
 

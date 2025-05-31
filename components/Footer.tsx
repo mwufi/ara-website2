@@ -5,11 +5,6 @@ import SubscribeForUpdates from "@/components/SubscribeForUpdates";
 export default function Footer() {
     return (
         <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-            {/* Subscribe Section */}
-            <div className="max-w-7xl mx-auto px-6 py-16">
-                <SubscribeForUpdates />
-            </div>
-
             {/* Main Footer Content */}
             <div className="max-w-7xl mx-auto px-6 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
@@ -231,12 +226,8 @@ export default function Footer() {
                                 Privacy Policy
                             </Link>
                             <span>•</span>
-                            <Link href="/cookies" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
-                                Cookie Policy
-                            </Link>
-                            <span>•</span>
-                            <Link href="/responsible-ai" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
-                                Responsible AI
+                            <Link href="/easter-egg" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                                Easter Egg
                             </Link>
                         </div>
                     </div>
