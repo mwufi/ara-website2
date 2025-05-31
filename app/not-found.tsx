@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 export default function NotFound() {
     return (
         <>
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-50 to-white dark:from-gray-900 dark:to-gray-800 px-4">
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-50 to-white dark:from-gray-900 dark:to-gray-800 px-4 antialiased">
                 <NavHeader />
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -41,7 +41,7 @@ export default function NotFound() {
                                 transition={{ delay: 0.4, duration: 0.6 }}
                                 className="mb-8"
                             >
-                                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                                <p className="text-lg font-light text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
                                     You've ventured into uncharted digital territory! Our AI architects are busy constructing this section of the web.
                                 </p>
                                 <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -53,20 +53,20 @@ export default function NotFound() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.6, duration: 0.6 }}
-                                className="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:flex-wrap sm:justify-center lg:justify-start"
+                                className="space-y-3 sm:space-y-0 sm:space-x-4 sm:flex sm:flex-wrap sm:justify-center lg:justify-start"
                             >
                                 <Link
                                     href="/"
-                                    className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-lg transition-colors duration-300 shadow-lg hover:shadow-xl"
+                                    className="inline-block font-mono text-sm border border-gray-900 dark:border-gray-100 text-gray-900 dark:text-gray-100 px-6 py-3 hover:bg-gray-900/5 dark:hover:bg-gray-100/5 transition-all duration-300"
                                 >
-                                    🏠 Return Home
+                                    cd ~/home
                                 </Link>
 
                                 <Link
                                     href="/products"
-                                    className="inline-block bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-medium px-8 py-3 rounded-lg transition-colors duration-300"
+                                    className="inline-block font-mono text-sm border border-gray-900 dark:border-gray-100 text-gray-900 dark:text-gray-100 px-6 py-3 hover:bg-gray-900/5 dark:hover:bg-gray-100/5 transition-all duration-300"
                                 >
-                                    🚀 Explore Products
+                                    ./explore --products
                                 </Link>
                             </motion.div>
 
@@ -76,8 +76,8 @@ export default function NotFound() {
                                 transition={{ delay: 0.8, duration: 0.6 }}
                                 className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700"
                             >
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Lost? Email us at{" "}
+                                <p className="text-sm text-gray-500 dark:text-gray-400 font-mono">
+                                    $ help --contact{" "}
                                     <a
                                         href="mailto:support@ara.computer"
                                         className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline transition-colors"
@@ -159,16 +159,16 @@ export default function NotFound() {
                         className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center"
                     >
                         <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-6">
-                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-2">59.7%</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Site Coverage</div>
+                            <div className="text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 mb-2">59.7%</div>
+                            <div className="text-sm text-gray-600 dark:text-gray-400 font-mono">site_coverage</div>
                         </div>
                         <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-6">
-                            <div className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">24/7</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">AI Construction</div>
+                            <div className="text-2xl font-bold font-mono text-green-600 dark:text-green-400 mb-2">24/7</div>
+                            <div className="text-sm text-gray-600 dark:text-gray-400 font-mono">ai_construction</div>
                         </div>
                         <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-6">
-                            <div className="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-2">∞</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Possibilities</div>
+                            <div className="text-2xl font-bold font-mono text-purple-600 dark:text-purple-400 mb-2">∞</div>
+                            <div className="text-sm text-gray-600 dark:text-gray-400 font-mono">possibilities</div>
                         </div>
                     </motion.div>
                 </div>
