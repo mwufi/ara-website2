@@ -4,9 +4,9 @@ import Link from "next/link";
 export default function NavHeader() {
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
-            <div className="max-w-6xl mx-auto px-6 flex items-center justify-between py-6">
+            <div className="max-w-6xl mx-auto px-6 flex items-center justify-between py-10">
                 <Link href="/" className="flex items-center space-x-3 backdrop-blur-sm rounded-full px-8 bg-white/50 transition-transform duration-300 hover:scale-105">
-                    <div className="w-20 h-20 rounded-lg flex items-center justify-center">
+                    <div className="w-20 h-16 rounded-lg flex items-center justify-center">
                         <Image
                             src="/ara_logo.svg"
                             alt="Ara Intelligence Logo"

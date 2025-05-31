@@ -1,7 +1,6 @@
 import { allPosts } from 'content-collections'
 import PostHeader from './PostHeader'
-import { MDXContent } from "@content-collections/mdx/react";
-import { components } from '@/mdx-components'
+import PostBody from './PostBody';
 
 export const generateStaticParams = async () => allPosts.map((post) => ({ slug: post._meta.path }))
 
@@ -17,15 +16,14 @@ const PostLayout = async ({ params }: { params: Promise<{ slug: string }> }) => 
     const post = allPosts.find((post) => post._meta.path === slug)
     if (!post) throw new Error(`Post not found for slug: ${slug}`)
 
+    return <PostContent post={post} />
+}
+
+function PostContent({ post }: { post: any }) {
     return (
         <main className="px-6 mx-auto">
             <PostHeader post={post} />
-
-            <div className="[&>*]:mb-3 [&>*:last-child]:mb-0 max-w-5xl mx-auto border-t border-gray-200 pt-12">
-                <div className="max-w-[45rem] mr-auto">
-                    <MDXContent code={post.mdx} components={components} />
-                </div>
-            </div>
+            <PostBody post={post} />
         </main>
     )
 }
