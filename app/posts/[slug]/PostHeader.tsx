@@ -1,5 +1,5 @@
 import { format, parseISO } from "date-fns";
-import { Post } from "contentlayer/generated";
+import { Post } from "content-collections";
 
 export default function PostHeader({ post }: { post: Post }) {
     return (
@@ -18,8 +18,8 @@ export default function PostHeader({ post }: { post: Post }) {
                     {post.title}
                 </h2>
                 <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <time dateTime={post.date}>
-                        {format(parseISO(post.date), 'LLLL d, yyyy')}
+                    <time dateTime={post.date.toISOString()}>
+                        {format(post.date, 'LLLL d, yyyy')}
                     </time>
                     {post.previewTags && (
                         <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-full">

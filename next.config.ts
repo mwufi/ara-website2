@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
-import { withContentlayer } from "next-contentlayer2";
+import { withContentCollections } from "@content-collections/next";
 
 const nextConfig: NextConfig = {
   /* config options here */
 };
 
-export default withContentlayer(nextConfig);
+export default withContentCollections(nextConfig);
   
