@@ -21,7 +21,7 @@ const PostLayout = async ({ params }: { params: Promise<{ slug: string }> }) => 
 
 function PostContent({ post }: { post: any }) {
     return (
-        <main className="px-6 mx-auto">
+        <main className="px-6 mx-auto pb-30">
             <PostHeader post={post} />
             <PostBody post={post} />
         </main>
