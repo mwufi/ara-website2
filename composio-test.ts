@@ -40,7 +40,7 @@ async function setup_google_integration() {
     // 2 --- get the account from the user
     const connectedAccount = await toolset.connectedAccounts.initiate({
         integrationId: integration.id,
-        entityId: 'default',
+        entityId: 'ztang%40gmail.com',
     });
 
     // connected account properties:
@@ -48,13 +48,18 @@ async function setup_google_integration() {
     console.log(connectedAccount.redirectUrl);
 }
 
-async function do_google_integration() {
+async function fetch_emails() {
+    const openai_client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const composio_toolset = new OpenAIToolSet({
+        apiKey: "nkuoxqdch8ajbfvjnplzbi"
+    });
+
     const tools = await composio_toolset.getTools({
-        actions: ["GMAIL_CREATE_LABEL"]
+        actions: ["GMAIL_FETCH_EMAILS"]
     });
 
 
-    const instruction = "Create a new label in my gmail account called 'test'";
+    const instruction = "Fetch 10 emails from my gmail account";
 
     // Creating a chat completion request to the OpenAI model
     const response = await openai_client.chat.completions.create({
@@ -67,12 +72,13 @@ async function do_google_integration() {
     const tool_response = await composio_toolset.handleToolCall(response);
 
     console.log(tool_response);
+
 }
 
 async function main() {
     // await github_integration();
     // await setup_google_integration();
-    await do_google_integration();
+    await fetch_emails();
 }
 
 main();
