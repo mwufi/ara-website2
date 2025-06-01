@@ -71,20 +71,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} ${sourceCodePro.variable} antialiased min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800`}
-      >
-        <SmoothScrollProvider>
-          <div className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <NavHeader />
-            <main className="pt-28">
-              {children}
-            </main>
-          </div>
-          <Footer />
-        </SmoothScrollProvider>
-      </body>
-    </html>
+    <>
+      <div className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <NavHeader />
+        <main className="pt-28">
+          {children}
+        </main>
+      </div>
+      <Footer />
+    </>
   );
 }
