@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-export default function NavHeader() {
+export default function NavHeader({ className = "max-w-7xl px-6" }: { className?: string }) {
     const { scrollY } = useScroll();
 
     // Transform scroll position to padding values
@@ -20,7 +20,7 @@ export default function NavHeader() {
                 paddingBottom: headerPadding,
             }}
         >
-            <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <div className={`mx-auto flex items-center justify-between ${className}`}>
                 <motion.div
                     style={{
                         scale: logoScale,
@@ -56,12 +56,9 @@ export default function NavHeader() {
                     <Link href="/products" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 font-medium transition-colors">
                         Products
                     </Link>
-                    <a href="#" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 font-medium transition-colors">
+                    <Link href="/about" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 font-medium transition-colors">
                         About
-                    </a>
-                    <a href="#" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 font-medium transition-colors">
-                        Connect
-                    </a>
+                    </Link>
                 </motion.nav>
             </div>
         </motion.header>
