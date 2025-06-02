@@ -6,6 +6,7 @@
       "dependencies": {
         "@emotion/is-prop-valid": "^1.3.1",
         "@instantdb/admin": "^0.19.14",
+        "@instantdb/react": "^0.19.14",
         "@studio-freight/lenis": "^1.0.42",
         "composio-core": "^0.5.39",
         "date-fns": "^4.1.0",
@@ -197,6 +198,8 @@
     "@instantdb/admin": ["@instantdb/admin@0.19.14", "", { "dependencies": { "@instantdb/core": "v0.19.14" } }, "sha512-6K98ovIRG6hay6c3SBF1gDzf/OZffqUbLT+ox1T4Iy+GFS2Tntk87ezwPOwj9vqHfYOv96uf287nHFK0CmZi6w=="],
 
     "@instantdb/core": ["@instantdb/core@0.19.14", "", { "dependencies": { "mutative": "^1.0.10", "uuid": "^9.0.0" } }, "sha512-8KDfO/9jFjRQtLVMwsL9/EJTC3LUbohnNf9io5olRAd30weEMCwSRhCG7AnvvefoeLRJ84loMzFNrb2QJFKY8w=="],
+
+    "@instantdb/react": ["@instantdb/react@0.19.14", "", { "dependencies": { "@instantdb/core": "v0.19.14" }, "peerDependencies": { "react": ">=16" } }, "sha512-iE7prDkgPxJZ5FhDjTYqwNgqijYExdzWnT6Cj8/4dsUvoHKinsBFnfnfN+I2Sx45PBbXZBYw5YGBMJSndAEsSA=="],
 
     "@isaacs/fs-minipass": ["@isaacs/fs-minipass@4.0.1", "", { "dependencies": { "minipass": "^7.0.4" } }, "sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w=="],
 

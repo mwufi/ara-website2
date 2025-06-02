@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/is-prop-valid": "^1.3.1",
     "@instantdb/admin": "^0.19.14",
+    "@instantdb/react": "^0.19.14",
     "@studio-freight/lenis": "^1.0.42",
     "composio-core": "^0.5.39",
     "date-fns": "^4.1.0",
