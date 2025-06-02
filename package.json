@@ -31,8 +31,8 @@
     "vaul": "^1.1.2"
   },
   "optionalDependencies": {
-    "@parcel/watcher-linux-x64-glibc": "2.2.0",
-    "lightningcss-linux-x64-gnu": "1.21.5"
+    "@parcel/watcher-linux-x64-glibc": "2.5.0",
+    "lightningcss-linux-x64-gnu": "1.30.1"
   },
   "devDependencies": {
     "@content-collections/core": "^0.9.0",
