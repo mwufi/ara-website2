@@ -21,6 +21,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
     "framer-motion": "^12.15.0",
+    "lightningcss": "^1.30.1",
     "lucide-react": "^0.511.0",
     "next": "15.3.3",
     "openai": "^5.0.1",
@@ -28,6 +29,10 @@
     "react-dom": "^19.1.0",
     "tailwind-merge": "^3.3.0",
     "vaul": "^1.1.2"
+  },
+  "optionalDependencies": {
+    "@parcel/watcher-linux-x64-glibc": "2.2.0",
+    "lightningcss-linux-x64-gnu": "1.21.5"
   },
   "devDependencies": {
     "@content-collections/core": "^0.9.0",
