@@ -59,13 +59,7 @@ export default function ZenLayout({
                             <Tabs value={currentTab} className="w-auto">
                                 <TabsList className="grid w-full grid-cols-3">
                                     <TabsTrigger value="today" asChild>
-                                        <Link href="/zen" className="flex items-center gap-2">
-                                            <span>Today</span>
-                                            {currentTab === "today" && (
-                                                <span className="text-xs opacity-70">
-                                                    {getTimeRemaining()}
-                                                </span>
-                                            )}
+                                        <Link href="/zen" className="flex items-center gap-2">Today
                                         </Link>
                                     </TabsTrigger>
                                     <TabsTrigger value="week" asChild>
