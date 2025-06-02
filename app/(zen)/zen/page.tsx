@@ -2,6 +2,19 @@
 
 import { id, i, init, InstaQLEntity } from "@instantdb/react";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Clock, Minus, Plus, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer";
 
 // ID for app: medipass
 const APP_ID = "7b2b718a-5c9d-42f1-8544-e36b80181c24";
@@ -179,72 +192,225 @@ function Schedule({ pomodoros }: { pomodoros: Pomodoro[] }) {
         p.completed &&
         p.startTime >= startOfDay &&
         p.startTime <= endOfDay
-    );
+    ).sort((a, b) => a.startTime - b.startTime);
 
-    // Create timeline from 9am to 9pm (12 hours)
-    const timeSlots = Array.from({ length: 24 }, (_, i) => {
-        const hour = 9 + (i * 0.5);
-        const displayHour = Math.floor(hour);
-        const displayMinute = (hour % 1) * 60;
-        const timeString = `${displayHour.toString().padStart(2, '0')}:${displayMinute.toString().padStart(2, '0')}`;
+    const deletePomodoro = (pomodoroId: string) => {
+        db.transact(db.tx.pomodoros[pomodoroId].delete());
+    };
 
-        const slotStart = new Date();
-        slotStart.setHours(displayHour, displayMinute, 0, 0);
-        const slotStartTime = slotStart.getTime();
-
-        const slotEnd = new Date(slotStartTime + 30 * 60 * 1000); // 30 minutes later
-
-        // Find pomodoro that overlaps with this time slot
-        const overlappingPomodoro = todaysPomodoros.find(p => {
-            const pomStart = p.startTime;
-            const pomEnd = p.endTime || Date.now();
-            return pomStart < slotEnd.getTime() && pomEnd > slotStartTime;
-        });
-
-        return {
-            time: timeString,
-            pomodoro: overlappingPomodoro,
-            height: overlappingPomodoro ? Math.min(60, (overlappingPomodoro.duration || 30)) : 20,
-        };
-    });
+    const updatePomodoroTime = (pomodoroId: string, newDuration: number) => {
+        db.transact(db.tx.pomodoros[pomodoroId].update({ duration: newDuration }));
+    };
 
     return (
         <div className="bg-white rounded-lg p-6 shadow-sm border">
-            <h2 className="text-xl font-medium text-gray-800 mb-4">Today's Schedule</h2>
-            <div className="space-y-1">
-                {timeSlots.map((slot, index) => (
-                    <div key={index} className="flex items-center">
-                        <div className="w-16 text-sm text-gray-500 font-mono">
-                            {slot.time}
-                        </div>
-                        <div
-                            className={`ml-4 rounded transition-all ${slot.pomodoro
-                                ? 'bg-blue-400 text-white px-3 py-1'
-                                : 'bg-gray-100 border-l-2 border-gray-300'
-                                }`}
-                            style={{
-                                height: `${slot.height}px`,
-                                minWidth: slot.pomodoro ? '200px' : '100px'
-                            }}
-                        >
-                            {slot.pomodoro && (
-                                <div className="text-sm">
-                                    {slot.pomodoro.task} ({slot.pomodoro.duration}min)
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                ))}
-            </div>
+            <h2 className="text-xl font-medium text-gray-800 mb-6">Today's Work Sessions</h2>
 
-            {todaysPomodoros.length > 0 && (
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                    <div className="text-sm text-blue-800">
-                        Total productive time today: {todaysPomodoros.reduce((sum, p) => sum + (p.duration || 0), 0)} minutes
-                    </div>
+            {todaysPomodoros.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                    <Clock className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                    <p>No work sessions completed today</p>
                 </div>
+            ) : (
+                <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <AnimatePresence>
+                            {todaysPomodoros.map((pomodoro, index) => (
+                                <PomodoroCard
+                                    key={pomodoro.id}
+                                    pomodoro={pomodoro}
+                                    index={index}
+                                    onDelete={() => deletePomodoro(pomodoro.id)}
+                                    onUpdateTime={(newDuration) => updatePomodoroTime(pomodoro.id, newDuration)}
+                                />
+                            ))}
+                        </AnimatePresence>
+                    </div>
+
+                    <motion.div
+                        className="p-4 bg-blue-50 rounded-lg"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        <div className="text-sm text-blue-800 flex items-center justify-between">
+                            <span>Total productive time today:</span>
+                            <span className="font-bold text-lg">
+                                {todaysPomodoros.reduce((sum, p) => sum + (p.duration || 0), 0)} minutes
+                            </span>
+                        </div>
+                    </motion.div>
+                </>
             )}
         </div>
+    );
+}
+
+function PomodoroCard({
+    pomodoro,
+    index,
+    onDelete,
+    onUpdateTime
+}: {
+    pomodoro: Pomodoro;
+    index: number;
+    onDelete: () => void;
+    onUpdateTime: (newDuration: number) => void;
+}) {
+    const [isHovered, setIsHovered] = useState(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [editDuration, setEditDuration] = useState(pomodoro.duration || 25);
+
+    const formatTime = (minutes: number) => {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        if (hours > 0) {
+            return `${hours}h ${mins}m`;
+        }
+        return `${mins}m`;
+    };
+
+    const getTimeFromStart = (startTime: number) => {
+        const start = new Date(startTime);
+        return start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+
+    const handleSaveTime = () => {
+        onUpdateTime(editDuration);
+        setIsDrawerOpen(false);
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -100, scale: 0.8 }}
+            transition={{
+                duration: 0.3,
+                delay: index * 0.1,
+                exit: { duration: 0.2 }
+            }}
+            className="relative overflow-hidden"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+                <DrawerTrigger asChild>
+                    <motion.div
+                        className="bg-gradient-to-br from-blue-400 to-blue-600 text-white p-4 rounded-lg cursor-pointer relative group"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                    >
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs opacity-75">
+                                    {getTimeFromStart(pomodoro.startTime)}
+                                </span>
+                                <span className="text-xs opacity-75 font-mono">
+                                    {formatTime(pomodoro.duration || 0)}
+                                </span>
+                            </div>
+                            <div className="font-medium text-sm line-clamp-2">
+                                {pomodoro.task}
+                            </div>
+                            <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                                <motion.div
+                                    className="h-full bg-white/40 rounded-full"
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${Math.min(100, ((pomodoro.duration || 0) / 60) * 100)}%` }}
+                                    transition={{ delay: index * 0.1 + 0.5, duration: 0.8 }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Delete button that slides in from right */}
+                        <motion.button
+                            className="absolute top-2 right-2 p-1 bg-red-500 rounded-full opacity-0 pointer-events-none"
+                            animate={{
+                                opacity: isHovered ? 1 : 0,
+                                x: isHovered ? 0 : 20,
+                                pointerEvents: isHovered ? 'auto' : 'none'
+                            }}
+                            transition={{ duration: 0.2 }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onDelete();
+                            }}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                        >
+                            <X className="w-3 h-3" />
+                        </motion.button>
+                    </motion.div>
+                </DrawerTrigger>
+
+                <DrawerContent>
+                    <div className="mx-auto w-full max-w-sm">
+                        <DrawerHeader>
+                            <DrawerTitle>Edit Work Session</DrawerTitle>
+                            <DrawerDescription>
+                                Adjust the duration of "{pomodoro.task}"
+                            </DrawerDescription>
+                        </DrawerHeader>
+                        <div className="p-4 pb-0">
+                            <div className="flex items-center justify-center space-x-4">
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-8 w-8 shrink-0 rounded-full"
+                                    onClick={() => setEditDuration(Math.max(5, editDuration - 5))}
+                                    disabled={editDuration <= 5}
+                                >
+                                    <Minus className="w-4 h-4" />
+                                </Button>
+                                <div className="flex-1 text-center">
+                                    <div className="text-6xl font-bold tracking-tighter">
+                                        {editDuration}
+                                    </div>
+                                    <div className="text-muted-foreground text-xs uppercase">
+                                        minutes
+                                    </div>
+                                </div>
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-8 w-8 shrink-0 rounded-full"
+                                    onClick={() => setEditDuration(Math.min(180, editDuration + 5))}
+                                    disabled={editDuration >= 180}
+                                >
+                                    <Plus className="w-4 h-4" />
+                                </Button>
+                            </div>
+
+                            <div className="mt-4 space-y-2">
+                                <div className="flex justify-between text-xs text-gray-500">
+                                    <span>Quick presets:</span>
+                                </div>
+                                <div className="flex gap-2">
+                                    {[15, 25, 45, 60].map((preset) => (
+                                        <Button
+                                            key={preset}
+                                            variant={editDuration === preset ? "default" : "outline"}
+                                            size="sm"
+                                            onClick={() => setEditDuration(preset)}
+                                            className="flex-1"
+                                        >
+                                            {preset}m
+                                        </Button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <DrawerFooter>
+                            <Button onClick={handleSaveTime}>Save Changes</Button>
+                            <DrawerClose asChild>
+                                <Button variant="outline">Cancel</Button>
+                            </DrawerClose>
+                        </DrawerFooter>
+                    </div>
+                </DrawerContent>
+            </Drawer>
+        </motion.div>
     );
 }
 
