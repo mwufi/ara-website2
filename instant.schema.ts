@@ -11,6 +11,14 @@ const _schema = i.schema({
     $users: i.entity({
       email: i.string().unique().indexed().optional(),
     }),
+    pomodoros: i.entity({
+      task: i.string(),
+      startTime: i.number(),
+      endTime: i.number().optional(),
+      duration: i.number().optional(), // in minutes
+      completed: i.boolean(),
+      createdAt: i.number(),
+    }),
   },
   links: {},
   rooms: {},
@@ -18,7 +26,7 @@ const _schema = i.schema({
 
 // This helps Typescript display nicer intellisense
 type _AppSchema = typeof _schema;
-interface AppSchema extends _AppSchema {}
+interface AppSchema extends _AppSchema { }
 const schema: AppSchema = _schema;
 
 export type { AppSchema };
