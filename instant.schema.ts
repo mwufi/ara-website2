@@ -19,6 +19,12 @@ const _schema = i.schema({
       completed: i.boolean(),
       createdAt: i.number(),
     }),
+    notes: i.entity({
+      content: i.string(),
+      date: i.string(), // Format: YYYY-MM-DD
+      createdAt: i.number().indexed(),
+      updatedAt: i.number().indexed(),
+    }),
   },
   links: {},
   rooms: {},
