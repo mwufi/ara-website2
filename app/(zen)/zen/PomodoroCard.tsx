@@ -93,7 +93,7 @@ export default function PomodoroCard({
                                     <motion.div
                                         className="h-full bg-white/40 rounded-full"
                                         initial={{ width: 0 }}
-                                        animate={{ width: `${Math.min(100, ((pomodoro.duration || 0) / 60) * 100)}%` }}
+                                        animate={{ width: `${Math.min(100, ((pomodoro.duration || 0) / 25) * 100)}%` }}
                                         transition={{ delay: index * 0.1 + 0.5, duration: 0.8 }}
                                     />
                                 </div>
