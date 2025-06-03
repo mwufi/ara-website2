@@ -19,7 +19,16 @@ export default function NotesTimeline() {
     const [newNote, setNewNote] = useState("");
     const [currentTime, setCurrentTime] = useState(new Date());
 
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+    // Helper function to get today's date in local timezone
+    const getTodayLocal = () => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const day = now.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const today = getTodayLocal();
 
     const { isLoading, error, data } = db.useQuery({
         notes: {
