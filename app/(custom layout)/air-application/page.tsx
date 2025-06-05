@@ -156,7 +156,7 @@ export default function AirApplication() {
                                 <div className="aspect-video rounded-xl overflow-hidden">
                                     <iframe
                                         id="background-music-player"
-                                        src="https://www.youtube.com/embed/B54DV0gVpWo?enablejsapi=1&origin=http://localhost:3000"
+                                        src="https://www.youtube.com/embed/B54DV0gVpWo?enablejsapi=1&origin=https://ara.computer"
                                         title="Background Music"
                                         className="w-full h-full"
                                         frameBorder="0"
