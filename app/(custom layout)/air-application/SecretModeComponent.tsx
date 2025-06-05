@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Paper from "@/components/Paper";
+import TactileButton from "@/components/TactileButton";
 
 export default function SecretModeContent() {
     return (
@@ -211,27 +213,31 @@ export default function SecretModeContent() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.8, delay: 1.6 }}
-                        className="text-center"
+                        className="max-w-4xl mx-auto"
                     >
-                        <h3 style={{ fontFamily: 'Instrument Serif, serif' }} className="text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-pink-600 bg-clip-text text-transparent">
-                            Why AIR? Why Now?
-                        </h3>
-                        <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
-                            The best products aren't going to look like ChatGPT with email bolted on, but something entirely different, and personal. AIR understands that the future of AI
-                            isn't just about capability, but about creating experiences that feel magical, personal, and human.
-                        </p>
-                        <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed mb-6">
-                            I'm excited about AIR because I care about human-centric AI. Everyone wants a personal assistant, but what that looks like in practice is still to-be-built. With AIR, we have a good chance at building something that feels like a real friend.
-                        </p>
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 1.8 }}
-                            className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 mt-6 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow"
-                        >
+                        <Paper className="p-12" intensity={0.2}>
+                            <h3 style={{ fontFamily: 'Instrument Serif, serif' }} className="text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-pink-600 bg-clip-text text-transparent text-center">
+                                Why AIR? Why Now?
+                            </h3>
+                            <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
+                                The best products aren't going to look like ChatGPT with email bolted on, but something entirely different, and personal. AIR understands that the future of AI
+                                isn't just about capability, but about creating experiences that feel magical, personal, and human.
+                            </p>
+                            <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed mb-6">
+                                I'm excited about AIR because I care about human-centric AI. Everyone wants a personal assistant, but what that looks like in practice is still to-be-built. With AIR, we have a good chance at building something that feels like a real friend.
+                            </p>
+                        </Paper>
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 1.8 }}
+                        className="text-center max-w-4xl mx-auto"
+                    >
+                        <TactileButton className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
                             <span>Let's build the future together</span>
                             <span>🚀</span>
-                        </motion.div>
+                        </TactileButton>
                     </motion.div>
                 </div>
             </div>
