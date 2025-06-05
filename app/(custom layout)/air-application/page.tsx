@@ -159,12 +159,22 @@ function FullPageTransitionDialog({
                     <AnimatePresence>
                         {showContent && (
                             <motion.div
-                                className="fixed inset-0 z-[110] overflow-y-auto"
+                                className="fixed inset-0 z-[110] overflow-y-auto scrollbar-hide"
+                                style={{
+                                    scrollbarWidth: 'none', /* Firefox */
+                                    msOverflowStyle: 'none', /* IE and Edge */
+                                }}
                                 variants={contentVariants}
                                 initial="hidden"
                                 animate="visible"
                                 exit="hidden"
                             >
+                                <style jsx>{`
+                                    /* WebKit browsers (Chrome, Safari, newer Edge) */
+                                    .scrollbar-hide::-webkit-scrollbar {
+                                        display: none;
+                                    }
+                                `}</style>
                                 {/* Background Effects */}
                                 <div className="absolute inset-0">
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
@@ -445,6 +455,29 @@ export default function AirApplication() {
                 href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&display=swap"
                 rel="stylesheet"
             />
+
+            {/* Global scrollbar hiding styles */}
+            <style jsx global>{`
+                /* Hide scrollbars globally */
+                html {
+                    scrollbar-width: none; /* Firefox */
+                    -ms-overflow-style: none; /* IE and Edge */
+                }
+                
+                /* WebKit browsers (Chrome, Safari, newer Edge) */
+                html::-webkit-scrollbar {
+                    display: none;
+                }
+                
+                body {
+                    scrollbar-width: none; /* Firefox */
+                    -ms-overflow-style: none; /* IE and Edge */
+                }
+                
+                body::-webkit-scrollbar {
+                    display: none;
+                }
+            `}</style>
 
             <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
                 <div className="max-w-4xl mx-auto px-6 py-12">
