@@ -138,7 +138,7 @@ export default function SecretModeContent() {
                             </div>
                             <div className="order-1 md:order-2">
                                 <h3 style={{ fontFamily: 'Instrument Serif, serif' }} className="text-4xl font-bold mb-6 text-gray-900">
-                                    Magic
+                                    Crafting Magic
                                 </h3>
                                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
                                     We're building a multi-platform ecosystem: Gmail integration, a polished web app,

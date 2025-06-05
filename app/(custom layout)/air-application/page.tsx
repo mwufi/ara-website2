@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,6 +26,30 @@ export default function AirApplication() {
     });
 
     const [secretMode, setSecretMode] = useState(false);
+
+    // YouTube API setup for volume control
+    useEffect(() => {
+        // Load YouTube IFrame API
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+        // Define the callback function
+        (window as any).onYouTubeIframeAPIReady = () => {
+            // Only target the background music player specifically
+            const backgroundMusicIframe = document.getElementById('background-music-player');
+            if (backgroundMusicIframe) {
+                new (window as any).YT.Player('background-music-player', {
+                    events: {
+                        onReady: (event: any) => {
+                            event.target.setVolume(10); // Set to 10% volume for background music only
+                        }
+                    }
+                });
+            }
+        };
+    }, []);
 
     const handleInputChange = (field: string, value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
@@ -109,25 +133,36 @@ export default function AirApplication() {
                             AIR Residency Application
                         </h1>
                         <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">
-                            Join our community of innovative builders and creators. Share your vision with us.
+                            Background music for this application
                         </p>
 
-                        {/* Video Placeholder */}
+                        {/* Background Music Player */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="relative w-full max-w-2xl mx-auto mb-8"
+                            className="relative w-full max-w-sm mx-auto mb-8"
                         >
-                            <div className="aspect-video bg-slate-200 dark:bg-slate-700 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-600 flex items-center justify-center group hover:border-slate-400 dark:hover:border-slate-500 transition-colors">
-                                <div className="text-center">
-                                    <div className="w-16 h-16 bg-slate-300 dark:bg-slate-600 rounded-full flex items-center justify-center mb-4 mx-auto group-hover:bg-slate-400 dark:group-hover:bg-slate-500 transition-colors">
-                                        <svg className="w-8 h-8 text-slate-600 dark:text-slate-300" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M8 5v14l11-7z" />
+                            <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-lg border border-slate-200 dark:border-slate-700">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Background Music</span>
+                                    <div className="ml-auto">
+                                        <svg className="w-4 h-4 text-slate-500" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
                                         </svg>
                                     </div>
-                                    <p className="text-slate-600 dark:text-slate-400 font-medium">Hi! I'm Zen</p>
-                                    <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">Upload your 60-second introduction video</p>
+                                </div>
+                                <div className="aspect-video rounded-xl overflow-hidden">
+                                    <iframe
+                                        id="background-music-player"
+                                        src="https://www.youtube.com/embed/B54DV0gVpWo?enablejsapi=1&origin=http://localhost:3000"
+                                        title="Background Music"
+                                        className="w-full h-full"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowFullScreen
+                                    ></iframe>
                                 </div>
                             </div>
                         </motion.div>
@@ -156,8 +191,28 @@ export default function AirApplication() {
                             </CardHeader>
                             <CardContent className="ml-11">
                                 <div className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                                    Video uploaded above ↑
+                                    Video uploaded below ↓
                                 </div>
+
+                                {/* 60-Second Demo Video */}
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.6, delay: 0.2 }}
+                                    className="relative w-full max-w-2xl mx-auto mt-4"
+                                >
+                                    <div className="aspect-video rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">
+                                        <iframe
+                                            src="https://www.youtube.com/embed/RU8cCE7S9lE"
+                                            title="The MOVIE - 60 Second Demo"
+                                            className="w-full h-full"
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            referrerPolicy="strict-origin-when-cross-origin"
+                                            allowFullScreen
+                                        ></iframe>
+                                    </div>
+                                </motion.div>
                             </CardContent>
                         </Card>
 
