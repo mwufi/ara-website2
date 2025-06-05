@@ -1,17 +1,20 @@
 'use client'
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function SecretModeContent() {
     return (
         <div className="min-h-full">
             {/* Header with Mountains Background */}
             <div
-                className="relative h-screen bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: 'url(/mountains_background.png)' }}
+                className="relative h-[60vh] bg-cover bg-center bg-no-repeat"
+                style={{
+                    backgroundImage: 'url(/mountains_background.png)'
+                }}
             >
-                {/* Gradient overlay that fades to light background */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white"></div>
+                {/* Narrow gradient overlay at the bottom */}
+                <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-blue-100 to-transparent"></div>
 
                 {/* Header content */}
                 <div className="relative z-10 px-8 pt-8 pb-4">
@@ -28,13 +31,13 @@ export default function SecretModeContent() {
                 </div>
 
                 {/* Hero Section - positioned over the image */}
-                <div className="relative z-10 px-8 py-16 text-center flex flex-col justify-center h-full">
+                <div className="relative z-10 px-8 py-8 text-center flex flex-col justify-center h-[30vh]">
                     <motion.h2
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                         style={{ fontFamily: 'Instrument Serif, serif' }}
-                        className="text-6xl md:text-8xl font-bold mb-8 text-white drop-shadow-lg leading-tight"
+                        className="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg leading-tight"
                     >
                         The Future is<br />
                         Conversational
@@ -43,9 +46,9 @@ export default function SecretModeContent() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.6 }}
-                        className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow"
+                        className="text-xl text-white font-bold max-w-2xl mx-auto leading-relaxed drop-shadow"
                     >
-                        We're not just building another AI assistant. We're crafting the first AI companion that truly understands your digital life and acts on your behalf with grace, intelligence, and personality.
+                        We're crafting the first AI companion that truly understands your digital life.
                     </motion.p>
                 </div>
             </div>
@@ -66,12 +69,10 @@ export default function SecretModeContent() {
                                 Why MailPuppy?
                             </h3>
                             <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                                Email is broken. We spend hours crafting messages, waiting for responses, and managing our digital relationships.
-                                What if your inbox had a delightful companion that could handle all of this seamlessly?
+                                MailPuppy is a bet that a real AI companion would know about your preferences, your communication style, and your relationships. So why not start with the inbox?
                             </p>
                             <p className="text-lg text-gray-700 leading-relaxed">
-                                MailPuppy isn't just an email client—it's your digital familiar, learning your communication style,
-                                understanding context, and taking action with the warmth and intelligence of a beloved pet.
+                                To make it genuinely delightful, we're committed to designing & building the most intuitive personal AI. Not only the best frontend, but the best AI UX -- how it stores memory, how it reminds you, and how you can customize its behavior. Building the best product experience: a novel everyday tool that you can make yours, like an unassuming yet powerful iPhone.
                             </p>
                         </div>
                         <div className="relative">
@@ -79,9 +80,15 @@ export default function SecretModeContent() {
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.6, delay: 1.0 }}
-                                className="w-full h-64 bg-gradient-to-br from-purple-100 to-pink-100 rounded-3xl border border-gray-200 flex items-center justify-center shadow-lg"
+                                className="w-full h-80 rounded-3xl flex items-center justify-center shadow-lg overflow-hidden"
                             >
-                                <div className="text-6xl">🐶</div>
+                                <Image
+                                    src="/mailpuppy.png"
+                                    alt="MailPuppy Logo"
+                                    width={320}
+                                    height={320}
+                                    className="object-contain"
+                                />
                             </motion.div>
                         </div>
                     </motion.div>
@@ -108,9 +115,8 @@ export default function SecretModeContent() {
                                 Technical Excellence
                             </h3>
                             <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                                We're building a multi-platform ecosystem: Gmail integration, standalone web app,
-                                and mobile companion. Our backend combines state-of-the-art LLMs with custom training
-                                on communication patterns.
+                                We're building a multi-platform ecosystem: Gmail integration, a polished web app,
+                                and a thoughtful mobile companion - in the service of dependability. One day, you can say, "Hey Jarvis, did I forget this?" and it'll answer back.
                             </p>
                             <div className="space-y-3">
                                 <motion.div
@@ -129,7 +135,7 @@ export default function SecretModeContent() {
                                     className="flex items-center gap-3"
                                 >
                                     <div className="w-2 h-2 bg-cyan-500 rounded-full"></div>
-                                    <span className="text-gray-600">Multi-platform Integration</span>
+                                    <span className="text-gray-600">Background Knowledge</span>
                                 </motion.div>
                                 <motion.div
                                     initial={{ opacity: 0, x: 20 }}
@@ -138,7 +144,7 @@ export default function SecretModeContent() {
                                     className="flex items-center gap-3"
                                 >
                                     <div className="w-2 h-2 bg-cyan-500 rounded-full"></div>
-                                    <span className="text-gray-600">Personalized Learning Models</span>
+                                    <span className="text-gray-600">Proactive AI UX</span>
                                 </motion.div>
                             </div>
                         </div>
@@ -211,14 +217,17 @@ export default function SecretModeContent() {
                             Why AIR? Why Now?
                         </h3>
                         <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
-                            Design isn't just aesthetics—it's empathy made visible. AIR understands that the future of AI
+                            The best products aren't going to look like ChatGPT with email bolted on, but something entirely different, and personal. AIR understands that the future of AI
                             isn't just about capability, but about creating experiences that feel magical, personal, and human.
+                        </p>
+                        <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed mb-6">
+                            I'm excited about AIR because I care about human-centric AI. Everyone wants a personal assistant, but what that looks like in practice is still to-be-built. With AIR, we have a good chance at building something that feels like a real friend.
                         </p>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 1.8 }}
-                            className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow"
+                            className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 mt-6 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow"
                         >
                             <span>Let's build the future together</span>
                             <span>🚀</span>
