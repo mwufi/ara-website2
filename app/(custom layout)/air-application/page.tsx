@@ -323,16 +323,14 @@ export default function AirApplication() {
                                 Six months from now, if everything goes perfectly, what will you have achieved?
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="ml-11">
-                            <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4">
-                                <div className="prose prose-slate dark:prose-invert max-w-none">
-                                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                                        In 6 months, it'll be December. I'll have 4000 paid users, each at $20/mo, earning over $1M ARR! If all goes well, we will be a good entrant in the AI personal assistant space, competing with ChatGPT, Cluely, and more. We will have a small app team, perfect our process of launching apps, and enter several new markets: AI companionship/gaming, AI productivity, AI education, and more.
-                                    </p>
-                                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-4">
-                                        We'll also build a community around Ara, and customizable, user-controlled AI companions! An important milestone to unlock is the ability for the community to upgrade & tweak Ara (the "App Store" moment for AI!), accelerating the pace of innovation.
-                                    </p>
-                                </div>
+                        <CardContent className="ml-11 mb-7">
+                            <div className="prose prose-slate dark:prose-invert max-w-none font-serif">
+                                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                                    In 6 months, it'll be December. I'll have 4000 paid users, each at $20/mo, earning over $1M ARR! (or more! everyone needs this) We'll double down on email, focusing on high value users (e.g. VCs, sales, etc), but also retain our consumer roots & mission to build an AI assistant that's actually fun. If all goes well, we will be a good entrant in the AI personal assistant space, competing with ChatGPT, Cluely, and more. We will build a small app team, perfect our process of launching apps, and enter several new markets: AI cozy gaming, AI social networking, AI education, and more.
+                                </p>
+                                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-4">
+                                    We'll also build a community around Ara, and customizable, user-controlled AI companions! An important milestone to unlock is the ability for the community to upgrade & tweak Ara (the "App Store" moment for AI!). by 6 months, we'll have launched a store of customizable Ara skills, as well as built the foundations for crafting Ara experiences (think: a dating app that selectively utilizes what Ara knows about you!).
+                                </p>
                             </div>
                         </CardContent>
                     </Card>
@@ -353,36 +351,28 @@ export default function AirApplication() {
                                 <Label className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4 block">
                                     Please confirm you will do your best to prioritize the time we have together, arrive prepared for scheduled sessions, and share requested materials with enough advance that our team can deliver the most value possible. *
                                 </Label>
-                                <RadioGroup
-                                    value={formData.commitment}
-                                    onValueChange={(value) => handleInputChange('commitment', value)}
-                                    className="mt-3"
-                                >
-                                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                                        <RadioGroupItem value="yes" id="commitment-yes" />
-                                        <Label
-                                            htmlFor="commitment-yes"
-                                            className="flex-1 cursor-pointer font-medium text-slate-700 dark:text-slate-300"
-                                        >
-                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-full text-sm font-semibold mr-3">
+                                <div className="mt-3 space-y-2">
+                                    <div className="flex items-center space-x-3 p-3 rounded-lg border-2 border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/20">
+                                        <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                                            <div className="w-2 h-2 bg-white rounded-full"></div>
+                                        </div>
+                                        <div className="flex-1 font-medium text-green-700 dark:text-green-300">
+                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-green-100 dark:bg-green-800 text-green-600 dark:text-green-400 rounded-full text-sm font-semibold mr-3">
                                                 Y
                                             </span>
                                             Yes
-                                        </Label>
+                                        </div>
                                     </div>
-                                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                                        <RadioGroupItem value="no" id="commitment-no" />
-                                        <Label
-                                            htmlFor="commitment-no"
-                                            className="flex-1 cursor-pointer font-medium text-slate-700 dark:text-slate-300"
-                                        >
-                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-full text-sm font-semibold mr-3">
+                                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 opacity-40">
+                                        <div className="w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rounded-full"></div>
+                                        <div className="flex-1 font-medium text-slate-500 dark:text-slate-500">
+                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-500 rounded-full text-sm font-semibold mr-3">
                                                 N
                                             </span>
                                             No
-                                        </Label>
+                                        </div>
                                     </div>
-                                </RadioGroup>
+                                </div>
                             </div>
 
                             <Separator className="my-6" />
@@ -392,55 +382,57 @@ export default function AirApplication() {
                                 <Label className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4 block">
                                     Please confirm you'll incorporate as a C-Corp by program start (we can help, if needed). *
                                 </Label>
-                                <RadioGroup
-                                    value={formData.incorporation}
-                                    onValueChange={(value) => handleInputChange('incorporation', value)}
-                                    className="mt-3"
-                                >
-                                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                                        <RadioGroupItem value="yes" id="incorporation-yes" />
-                                        <Label
-                                            htmlFor="incorporation-yes"
-                                            className="flex-1 cursor-pointer font-medium text-slate-700 dark:text-slate-300"
-                                        >
-                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-full text-sm font-semibold mr-3">
+                                <div className="mt-3 space-y-2">
+                                    <div className="flex items-center space-x-3 p-3 rounded-lg border-2 border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/20">
+                                        <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                                            <div className="w-2 h-2 bg-white rounded-full"></div>
+                                        </div>
+                                        <div className="flex-1 font-medium text-green-700 dark:text-green-300">
+                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-green-100 dark:bg-green-800 text-green-600 dark:text-green-400 rounded-full text-sm font-semibold mr-3">
                                                 Y
                                             </span>
                                             Yes
-                                        </Label>
+                                        </div>
                                     </div>
-                                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                                        <RadioGroupItem value="no" id="incorporation-no" />
-                                        <Label
-                                            htmlFor="incorporation-no"
-                                            className="flex-1 cursor-pointer font-medium text-slate-700 dark:text-slate-300"
-                                        >
-                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-full text-sm font-semibold mr-3">
+                                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 opacity-40">
+                                        <div className="w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rounded-full"></div>
+                                        <div className="flex-1 font-medium text-slate-500 dark:text-slate-500">
+                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-500 rounded-full text-sm font-semibold mr-3">
                                                 N
                                             </span>
                                             No
-                                        </Label>
+                                        </div>
                                     </div>
-                                </RadioGroup>
+                                </div>
                             </div>
 
                             <Separator className="my-6" />
 
                             {/* References */}
                             <div>
-                                <Label htmlFor="references" className="text-base font-medium text-slate-900 dark:text-slate-100 mb-2 block">
+                                <Label className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4 block">
                                     If selected as a finalist, we will ask for professional references who can speak to your team and innovation.
                                 </Label>
-                                <Textarea
-                                    id="references"
-                                    placeholder="Type your answer here..."
-                                    value={formData.references}
-                                    onChange={(e) => handleInputChange('references', e.target.value)}
-                                    className="min-h-[100px] resize-none mt-3"
-                                />
-                                <div className="flex items-center gap-2 mt-2 text-sm text-slate-500 dark:text-slate-400">
-                                    <span>Shift + Enter</span>
-                                    <span>to make a line break</span>
+                                <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 mt-3">
+                                    <div className="prose prose-slate dark:prose-invert max-w-none">
+                                        <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                                            Of course! I can connect you with more people as well.
+                                        </p>
+                                        <div className="mt-4 space-y-3">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                                <div>
+                                                    <strong>wuwei.bupt@bytedance.com</strong> - Wei Wu, former teammate at TikTok
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                                <div>
+                                                    <strong>xinghai.hu@bytedance.com</strong> - Xinghai Hu, former manager at TikTok
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </CardContent>
