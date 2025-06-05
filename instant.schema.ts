@@ -25,6 +25,11 @@ const _schema = i.schema({
       createdAt: i.number().indexed(),
       updatedAt: i.number().indexed(),
     }),
+    signups: i.entity({
+      email: i.string().unique().indexed(),
+      message: i.string(),
+      createdAt: i.number().indexed(),
+    }),
   },
   links: {},
   rooms: {},
