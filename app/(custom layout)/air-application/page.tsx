@@ -8,6 +8,70 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+
+// Preview Component for cursor-following thumbnails
+function PreviewComponent({
+    href,
+    preview,
+    children
+}: {
+    href: string;
+    preview: string;
+    children: React.ReactNode;
+}) {
+    const [isHovered, setIsHovered] = useState(false);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    return (
+        <>
+            <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline decoration-1 underline-offset-2 transition-colors cursor-pointer"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                onMouseMove={handleMouseMove}
+            >
+                {children}
+            </a>
+
+            {isHovered && (
+                <div
+                    className="fixed pointer-events-none z-50"
+                    style={{
+                        left: mousePosition.x + 15,
+                        top: mousePosition.y - 10,
+                    }}
+                >
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.15 }}
+                        className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl overflow-hidden"
+                    >
+                        <img
+                            src={preview}
+                            alt="Preview"
+                            className="w-48 h-32 object-cover"
+                            onError={(e) => {
+                                // Fallback for missing images
+                                const target = e.target as HTMLImageElement;
+                                target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDE5MiAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTI4IiBmaWxsPSIjRjFGNUY5Ii8+CjxwYXRoIGQ9Ik04NiA2NEw5NiA3NEw4NiA4NEw3NiA3NEw4NiA2NFoiIGZpbGw9IiM5Q0EzQUYiLz4KPHR0ZXh0IHg9Ijk2IiB5PSI2OCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2Mzc0OEEiPlByZXZpZXc8L3RleHQ+Cjwvc3ZnPgo=';
+                            }}
+                        />
+                    </motion.div>
+                </div>
+            )}
+        </>
+    );
+}
 
 export default function AirApplication() {
     const [formData, setFormData] = useState({
@@ -17,6 +81,9 @@ export default function AirApplication() {
         traction: '',
         sixMonthGoals: '',
         linkedin: '',
+        commitment: '',
+        incorporation: '',
+        references: '',
     });
 
     const handleInputChange = (field: string, value: string) => {
@@ -106,17 +173,52 @@ export default function AirApplication() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="ml-11">
-                            <Label htmlFor="materials" className="sr-only">Relevant materials</Label>
-                            <Textarea
-                                id="materials"
-                                placeholder="Type your answer here..."
-                                value={formData.materials}
-                                onChange={(e) => handleInputChange('materials', e.target.value)}
-                                className="min-h-[100px] resize-none"
-                            />
-                            <div className="flex items-center gap-2 mt-2 text-sm text-slate-500 dark:text-slate-400">
-                                <span>Shift + Enter</span>
-                                <span>to make a line break</span>
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {/* Left Column - Text Description */}
+                                <div>
+                                    <div className="prose prose-slate dark:prose-invert max-w-none">
+                                        <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                                            I'm making <strong>MailPuppy</strong> (or <strong>Ara Mail</strong>) -- conceptually an AI puppy that lives in your inbox! It can do things for you that other AI's can't ("email the President, and if he responds, invite him to a meeting!")
+                                        </p>
+                                        <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-4">
+                                            Right now I'm in the prototyping phase! I have some vibes I'm going for (modern, sleek email), and half my backend sorted out!
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Right Column - Links and Resources */}
+                                <div className="space-y-4">
+                                    <div>
+                                        <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Resources & Links</h4>
+                                        <div className="space-y-2">
+                                            <div>
+                                                <PreviewComponent
+                                                    href="https://app.chroniclehq.com/share/32a8c640-fb7d-438e-b68a-7aac82d289e9/98aff70d-0ac8-4e40-97ed-09cb852f0a0d/intro"
+                                                    preview="/pitchdeck-thumbnail.png" // You'll replace this with actual thumbnail
+                                                >
+                                                    Pitch Deck
+                                                </PreviewComponent>
+                                            </div>
+                                            <div>
+                                                <PreviewComponent
+                                                    href="https://www.figma.com/design/G76qPAGOS1GOz9nVIA0Vzu/Ara-Vibes?node-id=0-1&t=MyOgE03HO3ljO30E-1" // You'll add your Figma URL here
+                                                    preview="/figma-thumbnail.png" // You'll replace this with actual thumbnail
+                                                >
+                                                    Figma Moodboard
+                                                </PreviewComponent>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Project Status */}
+                                    <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800 mt-4">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                            <span className="text-sm font-medium text-green-700 dark:text-green-400">Prototyping Phase</span>
+                                        </div>
+                                        <p className="text-xs text-green-600 dark:text-green-400">Backend 50% complete </p>
+                                    </div>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -239,6 +341,114 @@ export default function AirApplication() {
                         </CardContent>
                     </Card>
 
+                    {/* Question 7: Commitment & References */}
+                    <Card className="border-slate-200 dark:border-slate-700 shadow-sm">
+                        <CardHeader>
+                            <CardTitle className="flex items-start gap-3 text-slate-900 dark:text-slate-100">
+                                <span className="bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400 rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold shrink-0">
+                                    7
+                                </span>
+                                Commitment & References*
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="ml-11 space-y-6">
+                            {/* Commitment Question */}
+                            <div>
+                                <Label className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4 block">
+                                    Please confirm you will do your best to prioritize the time we have together, arrive prepared for scheduled sessions, and share requested materials with enough advance that our team can deliver the most value possible. *
+                                </Label>
+                                <RadioGroup
+                                    value={formData.commitment}
+                                    onValueChange={(value) => handleInputChange('commitment', value)}
+                                    className="mt-3"
+                                >
+                                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                        <RadioGroupItem value="yes" id="commitment-yes" />
+                                        <Label
+                                            htmlFor="commitment-yes"
+                                            className="flex-1 cursor-pointer font-medium text-slate-700 dark:text-slate-300"
+                                        >
+                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-full text-sm font-semibold mr-3">
+                                                Y
+                                            </span>
+                                            Yes
+                                        </Label>
+                                    </div>
+                                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                        <RadioGroupItem value="no" id="commitment-no" />
+                                        <Label
+                                            htmlFor="commitment-no"
+                                            className="flex-1 cursor-pointer font-medium text-slate-700 dark:text-slate-300"
+                                        >
+                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-full text-sm font-semibold mr-3">
+                                                N
+                                            </span>
+                                            No
+                                        </Label>
+                                    </div>
+                                </RadioGroup>
+                            </div>
+
+                            <Separator className="my-6" />
+
+                            {/* C-Corp Question */}
+                            <div>
+                                <Label className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4 block">
+                                    Please confirm you'll incorporate as a C-Corp by program start (we can help, if needed). *
+                                </Label>
+                                <RadioGroup
+                                    value={formData.incorporation}
+                                    onValueChange={(value) => handleInputChange('incorporation', value)}
+                                    className="mt-3"
+                                >
+                                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                        <RadioGroupItem value="yes" id="incorporation-yes" />
+                                        <Label
+                                            htmlFor="incorporation-yes"
+                                            className="flex-1 cursor-pointer font-medium text-slate-700 dark:text-slate-300"
+                                        >
+                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-full text-sm font-semibold mr-3">
+                                                Y
+                                            </span>
+                                            Yes
+                                        </Label>
+                                    </div>
+                                    <div className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                        <RadioGroupItem value="no" id="incorporation-no" />
+                                        <Label
+                                            htmlFor="incorporation-no"
+                                            className="flex-1 cursor-pointer font-medium text-slate-700 dark:text-slate-300"
+                                        >
+                                            <span className="inline-flex items-center justify-center w-6 h-6 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-full text-sm font-semibold mr-3">
+                                                N
+                                            </span>
+                                            No
+                                        </Label>
+                                    </div>
+                                </RadioGroup>
+                            </div>
+
+                            <Separator className="my-6" />
+
+                            {/* References */}
+                            <div>
+                                <Label htmlFor="references" className="text-base font-medium text-slate-900 dark:text-slate-100 mb-2 block">
+                                    If selected as a finalist, we will ask for professional references who can speak to your team and innovation.
+                                </Label>
+                                <Textarea
+                                    id="references"
+                                    placeholder="Type your answer here..."
+                                    value={formData.references}
+                                    onChange={(e) => handleInputChange('references', e.target.value)}
+                                    className="min-h-[100px] resize-none mt-3"
+                                />
+                                <div className="flex items-center gap-2 mt-2 text-sm text-slate-500 dark:text-slate-400">
+                                    <span>Shift + Enter</span>
+                                    <span>to make a line break</span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
 
                     <Separator className="my-8" />
 
