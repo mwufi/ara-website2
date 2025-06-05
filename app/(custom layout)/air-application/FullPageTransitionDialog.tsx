@@ -7,13 +7,18 @@ import { Button } from "@/components/ui/button";
 export default function FullPageTransitionDialog({
     isOpen,
     onClose,
-    children
+    children,
+    gradientColors = "from-blue-900 via-indigo-900 to-slate-900",
+    outroGradientColors = "from-gray-200 via-gray-300 to-gray-400"
 }: {
     isOpen: boolean;
     onClose: () => void;
     children: React.ReactNode;
+    gradientColors?: string;
+    outroGradientColors?: string;
 }) {
     const [showContent, setShowContent] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
 
     const overlayVariants = {
         closed: {
@@ -49,10 +54,12 @@ export default function FullPageTransitionDialog({
     };
 
     const handleClose = () => {
+        setIsClosing(true);
         setShowContent(false);
         // Delay the actual close to allow content to fade out
         setTimeout(() => {
             onClose();
+            setIsClosing(false);
         }, 300);
     };
 
@@ -64,7 +71,7 @@ export default function FullPageTransitionDialog({
                     <div className="fixed inset-0 z-[100] pointer-events-none">
                         {/* Top Row */}
                         <motion.div
-                            className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900"
+                            className={`absolute top-0 left-0 w-full h-1/2 bg-gradient-to-br ${isClosing ? outroGradientColors : gradientColors}`}
                             style={{ transformOrigin: '50% 0%' }}
                             variants={overlayVariants}
                             initial="closed"
@@ -75,7 +82,7 @@ export default function FullPageTransitionDialog({
 
                         {/* Bottom Row */}
                         <motion.div
-                            className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-tr from-purple-900 via-blue-900 to-indigo-900"
+                            className={`absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-tr ${isClosing ? outroGradientColors : gradientColors}`}
                             style={{ transformOrigin: '50% 100%' }}
                             variants={overlayVariants}
                             initial="closed"
@@ -107,7 +114,7 @@ export default function FullPageTransitionDialog({
 
                                 {/* Fixed Background with Parallax */}
                                 <div className="fixed inset-0 z-[111]">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900"></div>
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${gradientColors}`}></div>
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
 
                                     {/* Parallax Elements */}

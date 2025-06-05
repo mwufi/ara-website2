@@ -7,6 +7,7 @@ import Paper from "@/components/Paper";
 import TactileButton from "@/components/TactileButton";
 import FlipCard from "@/components/FlipCard";
 import ContactForm from "@/components/ContactForm";
+import PreviewThumbnail from "./PreviewThumbnail";
 
 export default function SecretModeContent() {
     const [isFlipped, setIsFlipped] = useState(false);
@@ -172,6 +173,19 @@ export default function SecretModeContent() {
                                         <span className="text-gray-600">Proactive AI UX</span>
                                     </motion.div>
                                 </div>
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.4, delay: 1.7 }}
+                                className="mt-6"
+                            >
+                                <PreviewThumbnail
+                                    href="https://www.figma.com/design/G76qPAGOS1GOz9nVIA0Vzu/Ara-Vibes?node-id=0-1&t=MyOgE03HO3ljO30E-1"
+                                    preview="/figma-thumbnail.png"
+                                >
+                                    Check out our Figma!
+                                </PreviewThumbnail>
+                            </motion.div>
                             </div>
                         </motion.div>
 
