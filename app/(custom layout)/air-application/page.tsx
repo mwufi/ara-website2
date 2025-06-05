@@ -211,12 +211,12 @@ export default function AirApplication() {
                                     </div>
 
                                     {/* Project Status */}
-                                    <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800 mt-4">
+                                    <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800 mt-12">
                                         <div className="flex items-center gap-2 mb-1">
                                             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                            <span className="text-sm font-medium text-green-700 dark:text-green-400">Prototyping Phase</span>
+                                            <span className="text-sm font-medium text-green-700 dark:text-green-400">Product status</span>
                                         </div>
-                                        <p className="text-xs text-green-600 dark:text-green-400">Backend 50% complete </p>
+                                        <p className="text-xs text-green-600 dark:text-green-400">Work in progress! Check out the Figma above, I think that's what I'll make </p>
                                     </div>
                                 </div>
                             </div>
@@ -236,21 +236,29 @@ export default function AirApplication() {
                                 Please share their LinkedIn profiles or background information.
                             </CardDescription>
                         </CardHeader>
-                        <CardContent className="ml-11 space-y-4">
-                            <div>
-                                <Label htmlFor="linkedin" className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    LinkedIn Profile or Team Information
-                                </Label>
-                                <Input
-                                    id="linkedin"
-                                    placeholder="https://x.com/airesidency"
-                                    value={formData.linkedin}
-                                    onChange={(e) => handleInputChange('linkedin', e.target.value)}
-                                    className="mt-1"
-                                />
-                                <div className="flex items-center gap-2 mt-2 text-sm text-slate-500 dark:text-slate-400">
-                                    <span>Shift + Enter</span>
-                                    <span>to make a line break</span>
+                        <CardContent className="ml-11">
+                            <div className="flex items-center gap-4">
+                                {/* Profile Image */}
+                                <div className="shrink-0">
+                                    <img
+                                        src="https://pbs.twimg.com/profile_images/1930088119983886336/CPTJhZJr_400x400.jpg"
+                                        alt="Zen's profile"
+                                        className="w-16 h-16 rounded-full border-2 border-slate-200 dark:border-slate-700 object-cover"
+                                    />
+                                </div>
+
+                                {/* Profile Info */}
+                                <div className="flex-1">
+                                    <h4 className="font-medium text-slate-900 dark:text-slate-100 mb-1">Zen</h4>
+                                    <a
+                                        href="https://www.linkedin.com/in/zen-t-492720136/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm underline decoration-1 underline-offset-2 transition-colors"
+                                    >
+                                        {`https://linkedin.com/in/zen-t-492720136/`}
+                                    </a>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Currently building an Ara</p>
                                 </div>
                             </div>
                         </CardContent>
@@ -270,17 +278,12 @@ export default function AirApplication() {
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="ml-11">
-                            <Label htmlFor="technical" className="sr-only">Technical foundation</Label>
-                            <Textarea
-                                id="technical"
-                                placeholder="Type your answer here..."
-                                value={formData.technicalFoundation}
-                                onChange={(e) => handleInputChange('technicalFoundation', e.target.value)}
-                                className="min-h-[100px] resize-none"
-                            />
-                            <div className="flex items-center gap-2 mt-2 text-sm text-slate-500 dark:text-slate-400">
-                                <span>Shift + Enter</span>
-                                <span>to make a line break</span>
+                            <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4">
+                                <div className="prose prose-slate dark:prose-invert max-w-none">
+                                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                                        In the long run, agentic assistant. The first thing it'll do is your email! So we plan to ship a webapp (where you can configure the settings, etc), and then you can just use it in Gmail. As well, I plan to build an email client frontend (so you can do cooler things!), as well as a mobile app where you can chat with Ara.
+                                    </p>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -300,17 +303,12 @@ export default function AirApplication() {
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="ml-11">
-                            <Label htmlFor="traction" className="sr-only">Traction and validation</Label>
-                            <Textarea
-                                id="traction"
-                                placeholder="Type your answer here..."
-                                value={formData.traction}
-                                onChange={(e) => handleInputChange('traction', e.target.value)}
-                                className="min-h-[100px] resize-none"
-                            />
-                            <div className="flex items-center gap-2 mt-2 text-sm text-slate-500 dark:text-slate-400">
-                                <span>Shift + Enter</span>
-                                <span>to make a line break</span>
+                            <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4">
+                                <div className="prose prose-slate dark:prose-invert max-w-none">
+                                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                                        None so far! I'm still focused on building the product, but I plan on acquiring my first 200 users by the end of the month! (personal onboarding)
+                                    </p>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -326,17 +324,15 @@ export default function AirApplication() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="ml-11">
-                            <Label htmlFor="goals" className="sr-only">Six month goals</Label>
-                            <Textarea
-                                id="goals"
-                                placeholder="Type your answer here..."
-                                value={formData.sixMonthGoals}
-                                onChange={(e) => handleInputChange('sixMonthGoals', e.target.value)}
-                                className="min-h-[100px] resize-none"
-                            />
-                            <div className="flex items-center gap-2 mt-2 text-sm text-slate-500 dark:text-slate-400">
-                                <span>Shift + Enter</span>
-                                <span>to make a line break</span>
+                            <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4">
+                                <div className="prose prose-slate dark:prose-invert max-w-none">
+                                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                                        In 6 months, it'll be December. I'll have 4000 paid users, each at $20/mo, earning over $1M ARR! If all goes well, we will be a good entrant in the AI personal assistant space, competing with ChatGPT, Cluely, and more. We will have a small app team, perfect our process of launching apps, and enter several new markets: AI companionship/gaming, AI productivity, AI education, and more.
+                                    </p>
+                                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-4">
+                                        We'll also build a community around Ara, and customizable, user-controlled AI companions! An important milestone to unlock is the ability for the community to upgrade & tweak Ara (the "App Store" moment for AI!), accelerating the pace of innovation.
+                                    </p>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
