@@ -50,7 +50,7 @@ export default function SecretModeContent() {
                         transition={{ duration: 0.8, delay: 0.6 }}
                         className="text-xl text-white font-bold max-w-2xl mx-auto leading-relaxed drop-shadow"
                     >
-                        We're crafting the first AI companion that truly understands your digital life.
+                        We're crafting an email assistant to ship AI magic.
                     </motion.p>
                 </div>
             </div>
@@ -58,7 +58,7 @@ export default function SecretModeContent() {
             {/* Content on Light Background */}
             <div className="bg-white">
                 {/* Story Sections */}
-                <div className="space-y-32 px-8 py-32">
+                <div className="space-y-32 px-4 md:px-8 py-32">
                     {/* Vision Section */}
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
@@ -107,18 +107,24 @@ export default function SecretModeContent() {
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.6, delay: 1.2 }}
-                                className="w-full h-64 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-3xl border border-gray-200 flex items-center justify-center shadow-lg"
+                                className="w-full h-72 rounded-3xl border border-gray-200 flex items-center justify-center shadow-lg overflow-hidden bg-black"
                             >
-                                <div className="text-6xl">⚡</div>
+                                <Image
+                                    src="/ai.png"
+                                    alt="AI Technology"
+                                    width={320}
+                                    height={320}
+                                    className="object-contain"
+                                />
                             </motion.div>
                         </div>
                         <div className="order-1 md:order-2">
                             <h3 style={{ fontFamily: 'Instrument Serif, serif' }} className="text-4xl font-bold mb-6 text-gray-900">
-                                Technical Excellence
+                                Magic
                             </h3>
                             <p className="text-lg text-gray-700 leading-relaxed mb-6">
                                 We're building a multi-platform ecosystem: Gmail integration, a polished web app,
-                                and a thoughtful mobile companion - in the service of dependability. One day, you can say, "Hey Jarvis, did I forget this?" and it'll answer back.
+                                and a thoughtful mobile companion. Then we'll give it cloud persistence, to make it feel like a real friend - always there, yet lives independently of you. One day, you can say, "Hey Jarvis, did I forget this?" and it'll answer back.
                             </p>
                             <div className="space-y-3">
                                 <motion.div
@@ -215,18 +221,32 @@ export default function SecretModeContent() {
                         transition={{ duration: 0.8, delay: 1.6 }}
                         className="max-w-4xl mx-auto"
                     >
-                        <Paper className="p-12" intensity={0.2}>
+                        <div className="hidden md:block">
+                            <Paper className="p-4 md:p-12" intensity={0.2}>
+                                <h3 style={{ fontFamily: 'Instrument Serif, serif' }} className="text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-pink-600 bg-clip-text text-transparent text-center">
+                                    Why AIR? Why Now?
+                                </h3>
+                                <p className="text-lg font-serif text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
+                                    The best products aren't going to look like ChatGPT with email bolted on, but something entirely different, and personal. AIR understands that the future of AI
+                                    isn't just about capability, but about creating experiences that feel magical, personal, and human.
+                                </p>
+                                <p className="text-lg font-serif text-gray-700 max-w-3xl mx-auto leading-relaxed mb-6">
+                                    I'm excited about AIR because I care about human-centric AI. Everyone wants a personal assistant, but what that looks like in practice is still to-be-built. With AIR, we have a good chance at building something that feels like a real friend.
+                                </p>
+                            </Paper>
+                        </div>
+                        <div className="md:hidden">
                             <h3 style={{ fontFamily: 'Instrument Serif, serif' }} className="text-4xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-pink-600 bg-clip-text text-transparent text-center">
                                 Why AIR? Why Now?
                             </h3>
-                            <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
+                            <p className="text-lg font-serif text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
                                 The best products aren't going to look like ChatGPT with email bolted on, but something entirely different, and personal. AIR understands that the future of AI
                                 isn't just about capability, but about creating experiences that feel magical, personal, and human.
                             </p>
-                            <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed mb-6">
+                            <p className="text-lg font-serif text-gray-700 max-w-3xl mx-auto leading-relaxed mb-6">
                                 I'm excited about AIR because I care about human-centric AI. Everyone wants a personal assistant, but what that looks like in practice is still to-be-built. With AIR, we have a good chance at building something that feels like a real friend.
                             </p>
-                        </Paper>
+                        </div>
                     </motion.div>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}

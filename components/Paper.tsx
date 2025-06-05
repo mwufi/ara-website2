@@ -45,13 +45,13 @@ export default function Paper({ children, className = '', intensity = 0.3 }: Pap
             className={`
         bg-white
         rounded-2xl
-        shadow-[0_8px_32px_rgba(0,0,0,0.12)]
+        shadow-[0_4px_16px_rgba(0,0,0,0.08)]
         border
         border-gray-100
         transition-all
         duration-300
         ease-out
-        hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)]
+        hover:shadow-[0_6px_24px_rgba(0,0,0,0.12)]
         transform-gpu
         ${className}
       `}
