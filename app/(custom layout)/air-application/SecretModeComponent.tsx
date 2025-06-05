@@ -227,11 +227,14 @@ export default function SecretModeContent() {
                                     Why AIR? Why Now?
                                 </h3>
                                 <p className="text-lg font-serif text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
+                                    I like AIR because I like design. Better design, better products, more win.
+                                </p>
+                                <p className="text-lg font-serif text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
                                     The best products aren't going to look like ChatGPT with email bolted on, but something entirely different, and personal. AIR understands that the future of AI
                                     isn't just about capability, but about creating experiences that feel magical, personal, and human.
                                 </p>
                                 <p className="text-lg font-serif text-gray-700 max-w-3xl mx-auto leading-relaxed mb-6">
-                                    I'm excited about AIR because I care about human-centric AI. Everyone wants a personal assistant, but what that looks like in practice is still to-be-built. With AIR, we have a good chance at building something that feels like a real friend.
+                                    To do that, we have to care about delightful, human-centric AI. Everyone wants a personal assistant, but what that looks like in practice is still to be built. With AIR, we have a good chance at building something that feels like a real friend.
                                 </p>
                             </Paper>
                         </div>

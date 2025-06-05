@@ -34,7 +34,8 @@ export default function AirApplication() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log('Form submitted:', formData);
-        // Handle form submission
+        // Open secret mode instead of just handling form submission
+        setSecretMode(true);
     };
 
     return (
@@ -450,7 +451,7 @@ export default function AirApplication() {
                                 size="lg"
                                 className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
                             >
-                                Submit Application
+                                I'm finished
                             </Button>
                         </motion.div>
                     </motion.form>
