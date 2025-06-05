@@ -175,11 +175,43 @@ function FullPageTransitionDialog({
                                         display: none;
                                     }
                                 `}</style>
-                                {/* Background Effects */}
-                                <div className="absolute inset-0">
+
+                                {/* Fixed Background with Parallax */}
+                                <div className="fixed inset-0 z-[111]">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900"></div>
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-                                    <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-pink-500/20 to-transparent rounded-full blur-3xl"></div>
-                                    <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-cyan-500/20 to-transparent rounded-full blur-3xl"></div>
+
+                                    {/* Parallax Elements */}
+                                    <motion.div
+                                        className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-pink-500/20 to-transparent rounded-full blur-3xl"
+                                        style={{
+                                            transform: 'translate3d(0, 0, 0)',
+                                        }}
+                                        animate={{
+                                            y: [0, -20, 0],
+                                            x: [0, 10, 0],
+                                        }}
+                                        transition={{
+                                            duration: 20,
+                                            repeat: Infinity,
+                                            ease: "linear"
+                                        }}
+                                    />
+                                    <motion.div
+                                        className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-cyan-500/20 to-transparent rounded-full blur-3xl"
+                                        style={{
+                                            transform: 'translate3d(0, 0, 0)',
+                                        }}
+                                        animate={{
+                                            y: [0, 15, 0],
+                                            x: [0, -15, 0],
+                                        }}
+                                        transition={{
+                                            duration: 25,
+                                            repeat: Infinity,
+                                            ease: "linear"
+                                        }}
+                                    />
                                 </div>
 
                                 {/* Close Button */}
@@ -193,7 +225,7 @@ function FullPageTransitionDialog({
                                     </Button>
                                 </div>
 
-                                {/* Content */}
+                                {/* Scrolling Content */}
                                 <div className="relative z-[115] min-h-screen">
                                     {children}
                                 </div>
@@ -209,7 +241,7 @@ function FullPageTransitionDialog({
 // Secret Mode Content Component
 function SecretModeContent() {
     return (
-        <div className="min-h-screen text-white">
+        <div className="min-h-full text-white">
             {/* Header */}
             <div className="px-8 pt-8 pb-4">
                 <motion.div
