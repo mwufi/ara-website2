@@ -48,14 +48,14 @@ const DEFAULT_DATA: CalculatorData = {
     { name: "$100M revenue", payoff: 100000000 }
   ],
   scenarios: [
-    { name: "Ara", probabilities: [0.60, 0.50, 0.25, 0.10] },
-    { name: "Dex", probabilities: [0.90, 0.60, 0.30, 0.10] },
-    { name: "Ara + Dex", probabilities: [0.95, 0.85, 0.60, 0.30] }
+    { name: "Conservative", probabilities: [0.30, 0.10, 0.02, 0.005] },
+    { name: "Moderate", probabilities: [0.50, 0.20, 0.05, 0.01] },
+    { name: "Optimistic", probabilities: [0.70, 0.40, 0.15, 0.05] }
   ],
   ownershipPercentages: [
-    { name: "50% of Ara", multiplier: 0.5, scenario: "Ara" },
-    { name: "50% of Dex", multiplier: 0.5, scenario: "Dex" },
-    { name: "10% of Ara + Dex", multiplier: 0.1, scenario: "Ara + Dex" }
+    { name: "Employee Option Grant", multiplier: 0.005, scenario: "Moderate" },
+    { name: "Senior Engineer", multiplier: 0.01, scenario: "Moderate" },
+    { name: "Early Employee", multiplier: 0.02, scenario: "Moderate" }
   ]
 };
 
@@ -222,7 +222,7 @@ export default function PayoffsCalculator() {
     if (!calculatorRoom) return;
     const newScenarios = [...data.scenarios, {
       name: `Scenario ${data.scenarios.length + 1}`,
-      probabilities: new Array(data.outcomes.length).fill(0.5)
+      probabilities: new Array(data.outcomes.length).fill(0.1)
     }];
 
     db.transact(
@@ -501,7 +501,7 @@ export default function PayoffsCalculator() {
                       </td>
                       {data.outcomes.map((_, outcomeIndex) => {
                         const probability = scenario.probabilities[outcomeIndex] * 100;
-                        const color = probability > 70 ? 'bg-green-500' : probability > 40 ? 'bg-yellow-500' : 'bg-red-500';
+                        const color = probability > 30 ? 'bg-green-500' : probability > 10 ? 'bg-yellow-500' : probability > 1 ? 'bg-orange-500' : 'bg-red-500';
                         
                         return (
                           <td key={outcomeIndex} className="p-2">
@@ -511,15 +511,24 @@ export default function PayoffsCalculator() {
                                   value={[probability]}
                                   onValueChange={(value) => updateProbability(scenarioIndex, outcomeIndex, value[0].toString())}
                                   max={100}
-                                  step={5}
+                                  step={0.5}
                                   className="flex-1"
                                 />
-                                <span className="text-sm font-medium w-12 text-right">{probability.toFixed(0)}%</span>
+                                <Input
+                                  type="number"
+                                  value={probability.toFixed(1)}
+                                  onChange={(e) => updateProbability(scenarioIndex, outcomeIndex, e.target.value)}
+                                  className="w-16 text-center text-sm"
+                                  min="0"
+                                  max="100"
+                                  step="0.1"
+                                />
+                                <span className="text-sm">%</span>
                               </div>
                               <div className="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
                                 <div 
                                   className={`h-full transition-all duration-300 ${color}`}
-                                  style={{ width: `${probability}%` }}
+                                  style={{ width: `${Math.min(100, probability * 3)}%` }}
                                 />
                               </div>
                             </div>
@@ -585,7 +594,7 @@ export default function PayoffsCalculator() {
                                 className="font-medium max-w-[150px]"
                               />
                               <span className="text-sm text-gray-500">
-                                ({ownershipPercent.toFixed(0)}% of {ownership.scenario})
+                                ({ownershipPercent < 1 ? ownershipPercent.toFixed(2) : ownershipPercent.toFixed(1)}% of {ownership.scenario})
                               </span>
                             </div>
                           </td>
@@ -637,17 +646,38 @@ export default function PayoffsCalculator() {
                                 <div>
                                   <Label className="text-sm">Ownership Percentage</Label>
                                   <div className="space-y-2">
-                                    <Slider
-                                      value={[ownershipPercent]}
-                                      onValueChange={(value) => updateOwnershipMultiplier(index, value[0].toString())}
-                                      max={100}
-                                      step={1}
-                                      className="mt-2"
-                                    />
-                                    <div className="flex justify-between text-sm text-gray-500">
-                                      <span>0%</span>
-                                      <span className="font-medium">{ownershipPercent.toFixed(0)}%</span>
-                                      <span>100%</span>
+                                    <div className="flex items-center gap-2">
+                                      <Slider
+                                        value={[ownershipPercent]}
+                                        onValueChange={(value) => updateOwnershipMultiplier(index, value[0].toString())}
+                                        max={10}
+                                        step={0.1}
+                                        className="mt-2 flex-1"
+                                      />
+                                      <Input
+                                        type="number"
+                                        value={ownershipPercent.toFixed(2)}
+                                        onChange={(e) => updateOwnershipMultiplier(index, e.target.value)}
+                                        className="w-20 text-center text-sm"
+                                        min="0"
+                                        max="100"
+                                        step="0.01"
+                                      />
+                                      <span className="text-sm">%</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 mt-2">
+                                      <span className="text-xs text-gray-500">Quick set:</span>
+                                      {[0.1, 0.5, 1, 2, 5, 10].map(preset => (
+                                        <Button
+                                          key={preset}
+                                          onClick={() => updateOwnershipMultiplier(index, preset.toString())}
+                                          size="sm"
+                                          variant={ownershipPercent === preset ? "default" : "outline"}
+                                          className="h-6 px-2 text-xs"
+                                        >
+                                          {preset}%
+                                        </Button>
+                                      ))}
                                     </div>
                                   </div>
                                 </div>
@@ -714,7 +744,7 @@ export default function PayoffsCalculator() {
                       return (
                         <div key={outcomeIndex} className="space-y-2">
                           <Label className="text-sm">
-                            {outcome.name}: {currentProb.toFixed(0)}% → {newProb.toFixed(0)}%
+                            {outcome.name}: {currentProb.toFixed(1)}% → {newProb.toFixed(1)}%
                           </Label>
                           <Slider
                             value={[improvement]}
@@ -724,8 +754,8 @@ export default function PayoffsCalculator() {
                                 [`${scenarioIndex}-${outcomeIndex}`]: value[0]
                               }));
                             }}
-                            max={100 - currentProb}
-                            step={5}
+                            max={Math.min(20, 100 - currentProb)}
+                            step={0.5}
                             className="flex-1"
                           />
                           <div className="text-xs text-gray-500">
