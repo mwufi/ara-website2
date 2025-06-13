@@ -4,7 +4,9 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import { init } from '@instantdb/react';
 import { Button } from '@/components/ui/button';
-import { Trash2 } from 'lucide-react';
+import { Trash2, TrendingUp, Copy } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -219,6 +221,22 @@ export default function PayoffsCalculator() {
     const newScenarios = [...data.scenarios, {
       name: `Scenario ${data.scenarios.length + 1}`,
       probabilities: new Array(data.outcomes.length).fill(0.5)
+    }];
+
+    db.transact(
+      db.tx.calculatorRooms[calculatorRoom.id].update({
+        scenarios: newScenarios,
+        updatedAt: Date.now()
+      })
+    );
+  };
+
+  const duplicateScenario = (scenarioIndex: number) => {
+    if (!calculatorRoom) return;
+    const scenarioToDuplicate = data.scenarios[scenarioIndex];
+    const newScenarios = [...data.scenarios, {
+      name: `${scenarioToDuplicate.name} (Copy)`,
+      probabilities: [...scenarioToDuplicate.probabilities]
     }];
 
     db.transact(
@@ -461,6 +479,14 @@ export default function PayoffsCalculator() {
                             className="font-medium min-w-[120px]"
                           />
                           <Button
+                            onClick={() => duplicateScenario(scenarioIndex)}
+                            size="sm"
+                            variant="ghost"
+                            title="Duplicate scenario"
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                          <Button
                             onClick={() => deleteScenario(scenarioIndex)}
                             size="sm"
                             variant="ghost"
@@ -471,21 +497,33 @@ export default function PayoffsCalculator() {
                           </Button>
                         </div>
                       </td>
-                      {data.outcomes.map((_, outcomeIndex) => (
-                        <td key={outcomeIndex} className="p-2">
-                          <div className="flex items-center gap-1">
-                            <Input
-                              type="number"
-                              value={(scenario.probabilities[outcomeIndex] * 100).toFixed(0)}
-                              onChange={(e) => updateProbability(scenarioIndex, outcomeIndex, e.target.value)}
-                              className="w-20 text-center"
-                              min="0"
-                              max="100"
-                            />
-                            <span className="text-sm">%</span>
-                          </div>
-                        </td>
-                      ))}
+                      {data.outcomes.map((_, outcomeIndex) => {
+                        const probability = scenario.probabilities[outcomeIndex] * 100;
+                        const color = probability > 70 ? 'bg-green-500' : probability > 40 ? 'bg-yellow-500' : 'bg-red-500';
+                        
+                        return (
+                          <td key={outcomeIndex} className="p-2">
+                            <div className="space-y-2">
+                              <div className="flex items-center gap-2">
+                                <Slider
+                                  value={[probability]}
+                                  onValueChange={(value) => updateProbability(scenarioIndex, outcomeIndex, value[0].toString())}
+                                  max={100}
+                                  step={5}
+                                  className="flex-1"
+                                />
+                                <span className="text-sm font-medium w-12 text-right">{probability.toFixed(0)}%</span>
+                              </div>
+                              <div className="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+                                <div 
+                                  className={`h-full transition-all duration-300 ${color}`}
+                                  style={{ width: `${probability}%` }}
+                                />
+                              </div>
+                            </div>
+                          </td>
+                        );
+                      })}
                     </tr>
                   ))}
                 </tbody>
@@ -596,23 +634,80 @@ export default function PayoffsCalculator() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.ownershipPercentages.map((ownership, index) => (
-                    <tr key={index} className="border-t">
-                      <td className="p-2 font-medium">{ownership.name}</td>
-                      {payoffBreakdowns[ownership.name]?.map((payoff, outcomeIndex) => (
-                        <td key={outcomeIndex} className="p-2 text-center">
-                          {formatCurrency(payoff)}
+                  {data.ownershipPercentages.map((ownership, index) => {
+                    const maxPayoff = Math.max(...(payoffBreakdowns[ownership.name] || [0]));
+                    return (
+                      <tr key={index} className="border-t">
+                        <td className="p-2 font-medium">{ownership.name}</td>
+                        {payoffBreakdowns[ownership.name]?.map((payoff, outcomeIndex) => {
+                          const intensity = maxPayoff > 0 ? payoff / maxPayoff : 0;
+                          const bgColor = intensity > 0.7 ? 'bg-green-100' : intensity > 0.3 ? 'bg-yellow-100' : 'bg-red-100';
+                          return (
+                            <td key={outcomeIndex} className={`p-2 text-center ${bgColor}`}>
+                              {formatCurrency(payoff)}
+                            </td>
+                          );
+                        }) || data.outcomes.map((_, i) => (
+                          <td key={i} className="p-2 text-center">$0</td>
+                        ))}
+                        <td className="p-2 text-center font-bold text-green-600">
+                          {formatCurrency(expectedPayoffs[ownership.name] || 0)}
                         </td>
-                      )) || data.outcomes.map((_, i) => (
-                        <td key={i} className="p-2 text-center">$0</td>
-                      ))}
-                      <td className="p-2 text-center font-bold text-green-600">
-                        {formatCurrency(expectedPayoffs[ownership.name] || 0)}
-                      </td>
-                    </tr>
-                  ))}
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Chart Visualization */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              <CardTitle>Expected Value Comparison</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="h-96">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={data.ownershipPercentages.map(ownership => ({
+                    name: ownership.name,
+                    value: expectedPayoffs[ownership.name] || 0,
+                    ...Object.fromEntries(
+                      data.outcomes.map((outcome, idx) => [
+                        outcome.name,
+                        payoffBreakdowns[ownership.name]?.[idx] || 0
+                      ])
+                    )
+                  }))}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis 
+                    tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`}
+                  />
+                  <Tooltip 
+                    formatter={(value: number) => formatCurrency(value)}
+                  />
+                  <Legend />
+                  {data.outcomes.map((outcome, index) => {
+                    const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6'];
+                    return (
+                      <Bar 
+                        key={index}
+                        dataKey={outcome.name}
+                        stackId="a"
+                        fill={colors[index % colors.length]}
+                      />
+                    );
+                  })}
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>
