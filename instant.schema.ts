@@ -30,9 +30,24 @@ const _schema = i.schema({
       message: i.string(),
       createdAt: i.number().indexed(),
     }),
+    calculatorRooms: i.entity({
+      roomId: i.string().unique().indexed(),
+      outcomes: i.json<Array<{name: string; payoff: number}>>(),
+      scenarios: i.json<Array<{name: string; probabilities: number[]}>>(),
+      ownershipPercentages: i.json<Array<{name: string; multiplier: number; scenario: string}>>(),
+      createdAt: i.number().indexed(),
+      updatedAt: i.number().indexed(),
+    }),
   },
   links: {},
-  rooms: {},
+  rooms: {
+    calculator: {
+      presence: i.entity({
+        name: i.string(),
+        color: i.string(),
+      }),
+    },
+  },
 });
 
 // This helps Typescript display nicer intellisense

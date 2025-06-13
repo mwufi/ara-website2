@@ -1,0 +1,49 @@
+
+# Startup Payoffs calculator
+
+				
+	Probabilities of reaching each stage (eventually)			
+				
+	$1M revenue	$10M revenue	$50M revenue	$100M revenue
+Ara	60%	50%	25%	10%
+Dex	90%	60%	30%	10%
+Ara + Dex	95%	85%	60%	30%
+				
+	Payoffs (at each stage), millions			
+	1	10	50	100
+				
+	Expected Payoffs in different scenarios			
+50% of Ara
+50% of Dex
+10% of Ara + Dex
+etc
+
+I want to create a calculator where we can adjust the probabilities of reaching each stage in revenue, and it shows me the expected payoffs for a founder of the company. this way, i can easily compare, and tweak the numbers
+
+I also want to store these calcualtors in instantdb. let's say i go to
+/calculator/<roomId>
+and play around with it. so then i'd have a data structure that represents this rooms like:
+
+{
+    "outcomes": [
+        {"name": "$1M revenue", "payoff": 1000000},
+        {"name": "$10M revenue", "payoff": 10000000},
+        {"name": "$50M revenue", "payoff": ... },
+    ],
+    "scenarios": [
+        {
+            "name": "Ara",
+            "probabilities": [0.60, 0.50, 0.20, etc]
+        },
+        {
+            "name": "Dex",
+            "probabilities": "...
+        }
+    ],
+    "ownership percentages": [
+        { "name": "50% of Ara", "multiplier": 0.5, "scenario": "Ara" }
+    ]
+}
+and from this stored data, we can compute what it'd be worth! and it'd update as we change the numbers, and save to this data structure automatically
+
+InstantDB (since it actually syncs across clients) gives us a good multiplayer experience!
