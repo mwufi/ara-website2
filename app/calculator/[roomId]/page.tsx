@@ -112,20 +112,26 @@ export default function PayoffsCalculator() {
     ownershipPercentages: calculatorRoom.ownershipPercentages || DEFAULT_DATA.ownershipPercentages
   } : DEFAULT_DATA;
 
-  // Calculate expected payoffs
-  const payoffs: { [key: string]: number } = {};
+  // Calculate expected payoffs with breakdown by outcome
+  const expectedPayoffs: { [key: string]: number } = {};
+  const payoffBreakdowns: { [key: string]: number[] } = {};
 
   data.ownershipPercentages.forEach(ownership => {
     const scenario = data.scenarios.find(s => s.name === ownership.scenario);
     if (!scenario) return;
 
     let expectedValue = 0;
+    const breakdowns: number[] = [];
+    
     data.outcomes.forEach((outcome, index) => {
       const probability = scenario.probabilities[index] || 0;
-      expectedValue += probability * outcome.payoff * ownership.multiplier;
+      const payoff = probability * outcome.payoff * ownership.multiplier;
+      breakdowns.push(payoff);
+      expectedValue += payoff;
     });
 
-    payoffs[ownership.name] = expectedValue;
+    expectedPayoffs[ownership.name] = expectedValue;
+    payoffBreakdowns[ownership.name] = breakdowns;
   });
 
 
@@ -152,6 +158,42 @@ export default function PayoffsCalculator() {
     db.transact(
       db.tx.calculatorRooms[calculatorRoom.id].update({
         outcomes: newOutcomes,
+        updatedAt: Date.now()
+      })
+    );
+  };
+
+  const updateOutcomeName = (outcomeIndex: number, value: string) => {
+    if (!calculatorRoom) return;
+    const newOutcomes = [...data.outcomes];
+    newOutcomes[outcomeIndex].name = value;
+
+    db.transact(
+      db.tx.calculatorRooms[calculatorRoom.id].update({
+        outcomes: newOutcomes,
+        updatedAt: Date.now()
+      })
+    );
+  };
+
+  const updateScenarioName = (scenarioIndex: number, value: string) => {
+    if (!calculatorRoom) return;
+    const oldName = data.scenarios[scenarioIndex].name;
+    const newScenarios = [...data.scenarios];
+    newScenarios[scenarioIndex].name = value;
+
+    // Update ownershipPercentages that reference this scenario
+    const newOwnershipPercentages = data.ownershipPercentages.map(ownership => {
+      if (ownership.scenario === oldName) {
+        return { ...ownership, scenario: value };
+      }
+      return ownership;
+    });
+
+    db.transact(
+      db.tx.calculatorRooms[calculatorRoom.id].update({
+        scenarios: newScenarios,
+        ownershipPercentages: newOwnershipPercentages,
         updatedAt: Date.now()
       })
     );
@@ -276,7 +318,11 @@ export default function PayoffsCalculator() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {data.outcomes.map((outcome, index) => (
                 <div key={index} className="flex items-center gap-4">
-                  <Label className="min-w-[120px]">{outcome.name}</Label>
+                  <Input
+                    value={outcome.name}
+                    onChange={(e) => updateOutcomeName(index, e.target.value)}
+                    className="min-w-[150px]"
+                  />
                   <div className="flex items-center gap-2">
                     <span>$</span>
                     <Input
@@ -316,7 +362,13 @@ export default function PayoffsCalculator() {
                 <tbody>
                   {data.scenarios.map((scenario, scenarioIndex) => (
                     <tr key={scenarioIndex}>
-                      <td className="p-2 font-medium">{scenario.name}</td>
+                      <td className="p-2">
+                        <Input
+                          value={scenario.name}
+                          onChange={(e) => updateScenarioName(scenarioIndex, e.target.value)}
+                          className="font-medium min-w-[120px]"
+                        />
+                      </td>
                       {data.outcomes.map((_, outcomeIndex) => (
                         <td key={outcomeIndex} className="p-2">
                           <div className="flex items-center gap-1">
@@ -340,18 +392,18 @@ export default function PayoffsCalculator() {
           </CardContent>
         </Card>
 
-        {/* Ownership Percentages & Expected Payoffs */}
+        {/* Ownership Configuration */}
         <Card>
           <CardHeader>
             <div className="flex justify-between items-center">
-              <CardTitle>Ownership & Expected Payoffs</CardTitle>
+              <CardTitle>Ownership Configuration</CardTitle>
               <Button onClick={addOwnership} size="sm">Add Ownership</Button>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {data.ownershipPercentages.map((ownership, index) => (
-                <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center p-4 border rounded-lg">
+                <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 border rounded-lg">
                   <div>
                     <Label>Name</Label>
                     <Input
@@ -408,14 +460,49 @@ export default function PayoffsCalculator() {
                       ))}
                     </select>
                   </div>
-                  <div className="text-center md:text-right">
-                    <Label className="text-sm text-gray-500">Expected Value</Label>
-                    <p className="text-2xl font-bold text-green-600">
-                      {formatCurrency(expectedPayoffs[ownership.name] || 0)}
-                    </p>
-                  </div>
                 </div>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Expected Payoffs Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Expected Payoffs Breakdown</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr>
+                    <th className="text-left p-2">Ownership</th>
+                    {data.outcomes.map((outcome, index) => (
+                      <th key={index} className="text-center p-2 min-w-[120px]">
+                        {outcome.name}
+                      </th>
+                    ))}
+                    <th className="text-center p-2 min-w-[120px] font-bold">Total Expected</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.ownershipPercentages.map((ownership, index) => (
+                    <tr key={index} className="border-t">
+                      <td className="p-2 font-medium">{ownership.name}</td>
+                      {payoffBreakdowns[ownership.name]?.map((payoff, outcomeIndex) => (
+                        <td key={outcomeIndex} className="p-2 text-center">
+                          {formatCurrency(payoff)}
+                        </td>
+                      )) || data.outcomes.map((_, i) => (
+                        <td key={i} className="p-2 text-center">$0</td>
+                      ))}
+                      <td className="p-2 text-center font-bold text-green-600">
+                        {formatCurrency(expectedPayoffs[ownership.name] || 0)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>
