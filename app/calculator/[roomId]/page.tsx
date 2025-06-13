@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import { init } from '@instantdb/react';
 import { Button } from '@/components/ui/button';
+import { Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -246,6 +247,84 @@ export default function PayoffsCalculator() {
     }
   };
 
+  const addOutcome = () => {
+    if (!calculatorRoom) return;
+    const newOutcomes = [...data.outcomes, {
+      name: `Stage ${data.outcomes.length + 1}`,
+      payoff: 0
+    }];
+    
+    // Add probability for new outcome to all scenarios
+    const newScenarios = data.scenarios.map(scenario => ({
+      ...scenario,
+      probabilities: [...scenario.probabilities, 0]
+    }));
+
+    db.transact(
+      db.tx.calculatorRooms[calculatorRoom.id].update({
+        outcomes: newOutcomes,
+        scenarios: newScenarios,
+        updatedAt: Date.now()
+      })
+    );
+  };
+
+  const deleteOutcome = (outcomeIndex: number) => {
+    if (!calculatorRoom || data.outcomes.length <= 1) return;
+    
+    const newOutcomes = data.outcomes.filter((_, index) => index !== outcomeIndex);
+    
+    // Remove probability for this outcome from all scenarios
+    const newScenarios = data.scenarios.map(scenario => ({
+      ...scenario,
+      probabilities: scenario.probabilities.filter((_, index) => index !== outcomeIndex)
+    }));
+
+    db.transact(
+      db.tx.calculatorRooms[calculatorRoom.id].update({
+        outcomes: newOutcomes,
+        scenarios: newScenarios,
+        updatedAt: Date.now()
+      })
+    );
+  };
+
+  const deleteScenario = (scenarioIndex: number) => {
+    if (!calculatorRoom || data.scenarios.length <= 1) return;
+    
+    const deletedScenarioName = data.scenarios[scenarioIndex].name;
+    const newScenarios = data.scenarios.filter((_, index) => index !== scenarioIndex);
+    
+    // Update ownership percentages that reference the deleted scenario
+    const newOwnershipPercentages = data.ownershipPercentages.map(ownership => {
+      if (ownership.scenario === deletedScenarioName && newScenarios.length > 0) {
+        return { ...ownership, scenario: newScenarios[0].name };
+      }
+      return ownership;
+    });
+
+    db.transact(
+      db.tx.calculatorRooms[calculatorRoom.id].update({
+        scenarios: newScenarios,
+        ownershipPercentages: newOwnershipPercentages,
+        updatedAt: Date.now()
+      })
+    );
+  };
+
+  const deleteOwnership = (ownershipIndex: number) => {
+    if (!calculatorRoom) return;
+    
+    const newOwnershipPercentages = data.ownershipPercentages.filter((_, index) => index !== ownershipIndex);
+
+    db.transact(
+      db.tx.calculatorRooms[calculatorRoom.id].update({
+        ownershipPercentages: newOwnershipPercentages,
+        updatedAt: Date.now()
+      })
+    );
+  };
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -312,12 +391,15 @@ export default function PayoffsCalculator() {
         {/* Revenue Stages / Outcomes */}
         <Card>
           <CardHeader>
-            <CardTitle>Revenue Stages & Payoffs</CardTitle>
+            <div className="flex justify-between items-center">
+              <CardTitle>Revenue Stages & Payoffs</CardTitle>
+              <Button onClick={addOutcome} size="sm">Add Stage</Button>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {data.outcomes.map((outcome, index) => (
-                <div key={index} className="flex items-center gap-4">
+                <div key={index} className="flex items-center gap-2">
                   <Input
                     value={outcome.name}
                     onChange={(e) => updateOutcomeName(index, e.target.value)}
@@ -332,6 +414,15 @@ export default function PayoffsCalculator() {
                       className="w-32"
                     />
                   </div>
+                  <Button
+                    onClick={() => deleteOutcome(index)}
+                    size="sm"
+                    variant="ghost"
+                    className="text-red-500 hover:text-red-700"
+                    disabled={data.outcomes.length <= 1}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
               ))}
             </div>
@@ -363,11 +454,22 @@ export default function PayoffsCalculator() {
                   {data.scenarios.map((scenario, scenarioIndex) => (
                     <tr key={scenarioIndex}>
                       <td className="p-2">
-                        <Input
-                          value={scenario.name}
-                          onChange={(e) => updateScenarioName(scenarioIndex, e.target.value)}
-                          className="font-medium min-w-[120px]"
-                        />
+                        <div className="flex items-center gap-2">
+                          <Input
+                            value={scenario.name}
+                            onChange={(e) => updateScenarioName(scenarioIndex, e.target.value)}
+                            className="font-medium min-w-[120px]"
+                          />
+                          <Button
+                            onClick={() => deleteScenario(scenarioIndex)}
+                            size="sm"
+                            variant="ghost"
+                            className="text-red-500 hover:text-red-700"
+                            disabled={data.scenarios.length <= 1}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </td>
                       {data.outcomes.map((_, outcomeIndex) => (
                         <td key={outcomeIndex} className="p-2">
@@ -403,7 +505,7 @@ export default function PayoffsCalculator() {
           <CardContent>
             <div className="space-y-4">
               {data.ownershipPercentages.map((ownership, index) => (
-                <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 border rounded-lg">
+                <div key={index} className="relative grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 border rounded-lg">
                   <div>
                     <Label>Name</Label>
                     <Input
@@ -460,6 +562,14 @@ export default function PayoffsCalculator() {
                       ))}
                     </select>
                   </div>
+                  <Button
+                    onClick={() => deleteOwnership(index)}
+                    size="sm"
+                    variant="ghost"
+                    className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
               ))}
             </div>
