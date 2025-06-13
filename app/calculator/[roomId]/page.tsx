@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import { init } from '@instantdb/react';
 import { Button } from '@/components/ui/button';
-import { Trash2, TrendingUp, Copy } from 'lucide-react';
+import { Trash2, TrendingUp, Copy, ChevronDown, ChevronUp, Edit2, Users } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import { Input } from '@/components/ui/input';
@@ -62,6 +62,8 @@ const DEFAULT_DATA: CalculatorData = {
 export default function PayoffsCalculator() {
   const params = useParams();
   const roomId = params.roomId as string;
+  const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
+  const [hiringImpact, setHiringImpact] = useState<{[key: string]: number[]}>({});
 
   // Room presence - use useMemo to ensure stable values
   const room = useMemo(() => db.room('calculator', roomId), [roomId]);
@@ -532,132 +534,229 @@ export default function PayoffsCalculator() {
           </CardContent>
         </Card>
 
-        {/* Ownership Configuration */}
+        {/* Expected Payoffs & Ownership Configuration */}
         <Card>
           <CardHeader>
             <div className="flex justify-between items-center">
-              <CardTitle>Ownership Configuration</CardTitle>
+              <CardTitle>Ownership & Expected Payoffs</CardTitle>
               <Button onClick={addOwnership} size="sm">Add Ownership</Button>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {data.ownershipPercentages.map((ownership, index) => (
-                <div key={index} className="relative grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 border rounded-lg">
-                  <div>
-                    <Label>Name</Label>
-                    <Input
-                      value={ownership.name}
-                      onChange={(e) => {
-                        if (!calculatorRoom) return;
-                        const newOwnershipPercentages = [...data.ownershipPercentages];
-                        newOwnershipPercentages[index].name = e.target.value;
-
-                        db.transact(
-                          db.tx.calculatorRooms[calculatorRoom.id].update({
-                            ownershipPercentages: newOwnershipPercentages,
-                            updatedAt: Date.now()
-                          })
-                        );
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <Label>Ownership %</Label>
-                    <div className="flex items-center gap-1">
-                      <Input
-                        type="number"
-                        value={(ownership.multiplier * 100).toFixed(0)}
-                        onChange={(e) => updateOwnershipMultiplier(index, e.target.value)}
-                        min="0"
-                        max="100"
-                      />
-                      <span>%</span>
-                    </div>
-                  </div>
-                  <div>
-                    <Label>Scenario</Label>
-                    <select
-                      className="w-full h-10 px-3 rounded-md border border-input bg-background"
-                      value={ownership.scenario}
-                      onChange={(e) => {
-                        if (!calculatorRoom) return;
-                        const newOwnershipPercentages = [...data.ownershipPercentages];
-                        newOwnershipPercentages[index].scenario = e.target.value;
-
-                        db.transact(
-                          db.tx.calculatorRooms[calculatorRoom.id].update({
-                            ownershipPercentages: newOwnershipPercentages,
-                            updatedAt: Date.now()
-                          })
-                        );
-                      }}
-                    >
-                      {data.scenarios.map((scenario) => (
-                        <option key={scenario.name} value={scenario.name}>
-                          {scenario.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <Button
-                    onClick={() => deleteOwnership(index)}
-                    size="sm"
-                    variant="ghost"
-                    className="absolute top-2 right-2 text-red-500 hover:text-red-700"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Expected Payoffs Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Expected Payoffs Breakdown</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr>
-                    <th className="text-left p-2">Ownership</th>
+                    <th className="text-left p-2 min-w-[200px]">Ownership</th>
                     {data.outcomes.map((outcome, index) => (
                       <th key={index} className="text-center p-2 min-w-[120px]">
                         {outcome.name}
                       </th>
                     ))}
-                    <th className="text-center p-2 min-w-[120px] font-bold">Total Expected</th>
+                    <th className="w-16"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.ownershipPercentages.map((ownership, index) => {
                     const maxPayoff = Math.max(...(payoffBreakdowns[ownership.name] || [0]));
+                    const isExpanded = expandedRows.has(index);
+                    const ownershipPercent = ownership.multiplier * 100;
+                    const scenario = data.scenarios.find(s => s.name === ownership.scenario);
+                    
                     return (
-                      <tr key={index} className="border-t">
-                        <td className="p-2 font-medium">{ownership.name}</td>
-                        {payoffBreakdowns[ownership.name]?.map((payoff, outcomeIndex) => {
-                          const intensity = maxPayoff > 0 ? payoff / maxPayoff : 0;
-                          const bgColor = intensity > 0.7 ? 'bg-green-100' : intensity > 0.3 ? 'bg-yellow-100' : 'bg-red-100';
-                          return (
-                            <td key={outcomeIndex} className={`p-2 text-center ${bgColor}`}>
-                              {formatCurrency(payoff)}
+                      <React.Fragment key={index}>
+                        <tr className="border-t hover:bg-gray-50 transition-colors">
+                          <td className="p-2">
+                            <div className="flex items-center gap-2">
+                              <Input
+                                value={ownership.name}
+                                onChange={(e) => {
+                                  if (!calculatorRoom) return;
+                                  const newOwnershipPercentages = [...data.ownershipPercentages];
+                                  newOwnershipPercentages[index].name = e.target.value;
+
+                                  db.transact(
+                                    db.tx.calculatorRooms[calculatorRoom.id].update({
+                                      ownershipPercentages: newOwnershipPercentages,
+                                      updatedAt: Date.now()
+                                    })
+                                  );
+                                }}
+                                className="font-medium max-w-[150px]"
+                              />
+                              <span className="text-sm text-gray-500">
+                                ({ownershipPercent.toFixed(0)}% of {ownership.scenario})
+                              </span>
+                            </div>
+                          </td>
+                          {payoffBreakdowns[ownership.name]?.map((payoff, outcomeIndex) => {
+                            const intensity = maxPayoff > 0 ? payoff / maxPayoff : 0;
+                            const bgColor = intensity > 0.7 ? 'bg-green-100' : intensity > 0.3 ? 'bg-yellow-100' : 'bg-red-100';
+                            return (
+                              <td key={outcomeIndex} className={`p-2 text-center ${bgColor}`}>
+                                {formatCurrency(payoff)}
+                              </td>
+                            );
+                          }) || data.outcomes.map((_, i) => (
+                            <td key={i} className="p-2 text-center">$0</td>
+                          ))}
+                          <td className="p-2">
+                            <div className="flex items-center gap-1">
+                              <Button
+                                onClick={() => {
+                                  setExpandedRows(prev => {
+                                    const next = new Set(prev);
+                                    if (next.has(index)) {
+                                      next.delete(index);
+                                    } else {
+                                      next.add(index);
+                                    }
+                                    return next;
+                                  });
+                                }}
+                                size="sm"
+                                variant="ghost"
+                              >
+                                {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                              </Button>
+                              <Button
+                                onClick={() => deleteOwnership(index)}
+                                size="sm"
+                                variant="ghost"
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                        {isExpanded && (
+                          <tr className="bg-gray-50">
+                            <td colSpan={data.outcomes.length + 2} className="p-4">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                  <Label className="text-sm">Ownership Percentage</Label>
+                                  <div className="space-y-2">
+                                    <Slider
+                                      value={[ownershipPercent]}
+                                      onValueChange={(value) => updateOwnershipMultiplier(index, value[0].toString())}
+                                      max={100}
+                                      step={1}
+                                      className="mt-2"
+                                    />
+                                    <div className="flex justify-between text-sm text-gray-500">
+                                      <span>0%</span>
+                                      <span className="font-medium">{ownershipPercent.toFixed(0)}%</span>
+                                      <span>100%</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div>
+                                  <Label className="text-sm">Scenario</Label>
+                                  <select
+                                    className="w-full h-10 px-3 rounded-md border border-input bg-background mt-2"
+                                    value={ownership.scenario}
+                                    onChange={(e) => {
+                                      if (!calculatorRoom) return;
+                                      const newOwnershipPercentages = [...data.ownershipPercentages];
+                                      newOwnershipPercentages[index].scenario = e.target.value;
+
+                                      db.transact(
+                                        db.tx.calculatorRooms[calculatorRoom.id].update({
+                                          ownershipPercentages: newOwnershipPercentages,
+                                          updatedAt: Date.now()
+                                        })
+                                      );
+                                    }}
+                                  >
+                                    {data.scenarios.map((scenario) => (
+                                      <option key={scenario.name} value={scenario.name}>
+                                        {scenario.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
                             </td>
-                          );
-                        }) || data.outcomes.map((_, i) => (
-                          <td key={i} className="p-2 text-center">$0</td>
-                        ))}
-                        <td className="p-2 text-center font-bold text-green-600">
-                          {formatCurrency(expectedPayoffs[ownership.name] || 0)}
-                        </td>
-                      </tr>
+                          </tr>
+                        )}
+                      </React.Fragment>
                     );
                   })}
                 </tbody>
               </table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Hiring Impact Analysis */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              <CardTitle>Hiring Impact Analysis</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-gray-600 mb-4">
+              Simulate how hiring key talent could improve your success probabilities
+            </p>
+            <div className="space-y-4">
+              {data.scenarios.map((scenario, scenarioIndex) => (
+                <div key={scenarioIndex} className="border rounded-lg p-4">
+                  <h4 className="font-medium mb-3">{scenario.name} - Probability Improvements</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {data.outcomes.map((outcome, outcomeIndex) => {
+                      const currentProb = scenario.probabilities[outcomeIndex] * 100;
+                      const improvement = hiringImpact[`${scenarioIndex}-${outcomeIndex}`] || 0;
+                      const newProb = Math.min(100, currentProb + improvement);
+                      
+                      return (
+                        <div key={outcomeIndex} className="space-y-2">
+                          <Label className="text-sm">
+                            {outcome.name}: {currentProb.toFixed(0)}% → {newProb.toFixed(0)}%
+                          </Label>
+                          <Slider
+                            value={[improvement]}
+                            onValueChange={(value) => {
+                              setHiringImpact(prev => ({
+                                ...prev,
+                                [`${scenarioIndex}-${outcomeIndex}`]: value[0]
+                              }));
+                            }}
+                            max={100 - currentProb}
+                            step={5}
+                            className="flex-1"
+                          />
+                          <div className="text-xs text-gray-500">
+                            +{improvement}% improvement
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-4 p-3 bg-blue-50 rounded">
+                    <p className="text-sm font-medium">Impact on Expected Values:</p>
+                    {data.ownershipPercentages
+                      .filter(o => o.scenario === scenario.name)
+                      .map(ownership => {
+                        let improvedExpectedValue = 0;
+                        data.outcomes.forEach((outcome, idx) => {
+                          const improvement = hiringImpact[`${scenarioIndex}-${idx}`] || 0;
+                          const newProb = Math.min(1, scenario.probabilities[idx] + improvement / 100);
+                          improvedExpectedValue += newProb * outcome.payoff * ownership.multiplier;
+                        });
+                        const increase = improvedExpectedValue - (expectedPayoffs[ownership.name] || 0);
+                        
+                        return (
+                          <div key={ownership.name} className="text-sm mt-1">
+                            {ownership.name}: <span className="font-medium text-green-600">+{formatCurrency(increase)}</span>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
