@@ -320,6 +320,28 @@
   }
 }
 
+/* AI Inserted Text Animation */
+.ai-inserted-text {
+  display: inline;
+  animation: aiTextInsert 0.4s ease-out;
+}
+
+@keyframes aiTextInsert {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+    background-color: rgba(34, 197, 94, 0.1);
+  }
+  50% {
+    background-color: rgba(34, 197, 94, 0.2);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    background-color: transparent;
+  }
+}
+
 /* Tab hint animation */
 .ai-suggestion-hint {
   animation: aiHintPulse 2s ease-in-out infinite;
