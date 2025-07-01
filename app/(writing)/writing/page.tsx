@@ -40,11 +40,13 @@ export default function WritingPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <WritingEditor 
-        content={content}
-        onChange={handleContentChange}
-        userName={userName}
-      />
+      <div className="max-w-2xl mx-auto">
+        <WritingEditor 
+          content={content}
+          onChange={handleContentChange}
+          userName={userName}
+        />
+      </div>
     </div>
   )
 }

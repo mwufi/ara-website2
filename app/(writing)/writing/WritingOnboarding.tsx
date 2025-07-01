@@ -1,5 +1,3 @@
-'use client'
-
 import { useState } from 'react'
 
 interface WritingOnboardingProps {
@@ -49,7 +47,7 @@ export default function WritingOnboarding({ onComplete }: WritingOnboardingProps
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="text-lg border-none outline-none border-b-2 border-gray-300 focus:border-gray-600 bg-transparent text-center py-2 px-4 w-full"
+                className="text-lg border-none outline-none border-b-2 border-gray-300 focus:border-gray-600 bg-transparent text-center py-2 px-4 w-full text-gray-800"
                 placeholder="your name here"
                 autoFocus
               />

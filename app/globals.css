@@ -224,3 +224,113 @@
   color: inherit;
   padding: 0;
 }
+
+/* Comment Highlighting Styles */
+.comment-highlight {
+  background-color: #dbeafe;
+  border-radius: 4px;
+  padding: 2px 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.comment-highlight:hover {
+  background-color: #bfdbfe;
+  border-color: #93c5fd;
+}
+
+.comment-highlight.active {
+  background-color: #93c5fd;
+  border-color: #3b82f6;
+}
+
+/* Comment highlight with subtle indicator */
+.comment-highlight::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+  opacity: 0.8;
+  border: 2px solid white;
+}
+
+/* Alternative comment indicator for minimal style */
+.comment-highlight::after {
+  content: '💬';
+  font-size: 9px;
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  opacity: 0.6;
+  background: white;
+  border-radius: 50%;
+  padding: 1px;
+  line-height: 1;
+}
+
+/* Hide one of the indicators - using the dot */
+.comment-highlight::after {
+  display: none;
+}
+
+/* Dark mode support */
+.dark .comment-highlight {
+  background-color: rgba(59, 130, 246, 0.2);
+  border-color: transparent;
+}
+
+.dark .comment-highlight:hover {
+  background-color: rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.dark .comment-highlight.active {
+  background-color: rgba(59, 130, 246, 0.4);
+  border-color: #3b82f6;
+}
+
+.dark .comment-highlight::before {
+  background-color: #60a5fa;
+  border-color: #1f2937;
+}
+
+/* AI Suggestion Styles */
+.ai-suggestion-overlay {
+  background: linear-gradient(90deg, #9ca3af 0%, rgba(156, 163, 175, 0.7) 50%, rgba(156, 163, 175, 0.3) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: aiSuggestionFadeIn 0.3s ease-out;
+}
+
+@keyframes aiSuggestionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tab hint animation */
+.ai-suggestion-hint {
+  animation: aiHintPulse 2s ease-in-out infinite;
+}
+
+@keyframes aiHintPulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
